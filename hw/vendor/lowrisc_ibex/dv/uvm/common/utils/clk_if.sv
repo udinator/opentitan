@@ -8,8 +8,7 @@
 //
 //------------------------------------------------------------------------------
 
-interface clk_if(inout clk,
-                 inout rst_n);
+interface clk_if (inout clk, inout rst_n);
 
   logic clk_o;
   logic rst_no;

@@ -54,7 +54,7 @@ class gpio_random_long_reg_writes_reg_reads_vseq extends gpio_base_vseq;
         end
       endcase
 
-    end // end for
+    end  // end for
 
   endtask : body
 

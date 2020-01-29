@@ -4,7 +4,7 @@
 
 class i2c_agent_cfg extends dv_base_agent_cfg;
 
-// interface handle used by driver, monitor & the sequencer, via cfg handle
+  // interface handle used by driver, monitor & the sequencer, via cfg handle
   virtual i2c_if vif;
 
   `uvm_object_utils_begin(i2c_agent_cfg)

@@ -2,15 +2,16 @@
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
-class cip_base_scoreboard #(type RAL_T = dv_base_reg_block,
-                            type CFG_T = cip_base_env_cfg,
-                            type COV_T = cip_base_env_cov)
-                            extends dv_base_scoreboard #(RAL_T, CFG_T, COV_T);
+class cip_base_scoreboard #(
+    type RAL_T = dv_base_reg_block,
+    type CFG_T = cip_base_env_cfg,
+    type COV_T = cip_base_env_cov
+) extends dv_base_scoreboard #(RAL_T, CFG_T, COV_T);
   `uvm_component_param_utils(cip_base_scoreboard #(RAL_T, CFG_T, COV_T))
 
   // TLM fifos to pick up the packets
-  uvm_tlm_analysis_fifo #(tl_seq_item)  tl_a_chan_fifo;
-  uvm_tlm_analysis_fifo #(tl_seq_item)  tl_d_chan_fifo;
+  uvm_tlm_analysis_fifo #(tl_seq_item) tl_a_chan_fifo;
+  uvm_tlm_analysis_fifo #(tl_seq_item) tl_d_chan_fifo;
 
   `uvm_component_new
 
@@ -62,7 +63,7 @@ class cip_base_scoreboard #(type RAL_T = dv_base_reg_block,
   // only lsb addr is used, the other can be ignored, use this function to normalize the addr to
   // the format that RAL uses
   virtual function uvm_reg_addr_t get_normalized_addr(uvm_reg_addr_t addr);
-    return ({addr[TL_AW-1:2], 2'b00} & (cfg.csr_addr_map_size - 1)) + cfg.csr_base_addr;
+    return ({addr[TL_AW - 1:2], 2'b00} & (cfg.csr_addr_map_size - 1)) + cfg.csr_base_addr;
   endfunction
 
   // check if it's mem addr
@@ -93,10 +94,9 @@ class cip_base_scoreboard #(type RAL_T = dv_base_reg_block,
       end
     end
 
-    if (!is_tl_err && (!is_tl_mem_access_allowed(item) ||
-        !is_tl_csr_write_addr_word_aligned(item)       ||
-        !is_tl_csr_write_size_gte_csr_width(item)      ||
-        item.get_exp_d_error())) begin
+    if (!is_tl_err && (!is_tl_mem_access_allowed(item) || !is_tl_csr_write_addr_word_aligned(item)
+                       || !is_tl_csr_write_size_gte_csr_width(item) || item.get_exp_d_error())
+        ) begin
       is_tl_err = 1;
     end
     if ((is_tl_err || is_tl_unmapped_addr) && channel == DataChannel) begin
@@ -110,15 +110,15 @@ class cip_base_scoreboard #(type RAL_T = dv_base_reg_block,
     uvm_reg_addr_t addr = get_normalized_addr(item.a_addr);
     // check if it's mem addr or reg addr
     if (is_mem_addr(item) || addr inside {cfg.csr_addrs}) return 1;
-    else                                                  return 0;
+    else return 0;
   endfunction
 
   // check if tl mem access will trigger error or not
   virtual function bit is_tl_mem_access_allowed(tl_seq_item item);
     if (is_mem_addr(item)) begin
       // check if write isn't full word for mem that doesn't allow byte access
-      if (!cfg.en_mem_byte_write && (item.a_size != 2 || item.a_mask != '1) &&
-           item.a_opcode inside {tlul_pkg::PutFullData, tlul_pkg::PutPartialData}) begin
+      if (!cfg.en_mem_byte_write && (item.a_size != 2 || item.a_mask != '1) && item.a_opcode
+          inside {tlul_pkg::PutFullData, tlul_pkg::PutPartialData}) begin
         return 0;
       end
       // check if mem read happens while mem doesn't allow read
@@ -130,20 +130,18 @@ class cip_base_scoreboard #(type RAL_T = dv_base_reg_block,
   // check if csr write word-aligned
   virtual function bit is_tl_csr_write_addr_word_aligned(tl_seq_item item);
     if (item.is_write() && item.a_addr[1:0] != 0 && !is_mem_addr(item)) return 0;
-    else                                                                return 1;
+    else return 1;
   endfunction
 
   // check if csr write size greater or equal to csr width
   virtual function bit is_tl_csr_write_size_gte_csr_width(tl_seq_item item);
     if (!is_tl_access_mapped_addr(item) || is_mem_addr(item)) return 1;
     if (item.is_write()) begin
-      dv_base_reg    csr;
+      dv_base_reg csr;
       uvm_reg_addr_t addr = get_normalized_addr(item.a_addr);
-      `DV_CHECK_FATAL($cast(csr,
-                            ral.default_map.get_reg_by_offset(addr)))
-      if (csr.get_msb_pos >= 24 && item.a_mask[3:0] != 'b1111 ||
-          csr.get_msb_pos >= 16 && item.a_mask[2:0] != 'b111  ||
-          csr.get_msb_pos >= 8  && item.a_mask[1:0] != 'b11   ||
+      `DV_CHECK_FATAL($cast(csr, ral.default_map.get_reg_by_offset(addr)))
+      if (csr.get_msb_pos >= 24 && item.a_mask[3:0] != 'b1111 || csr.get_msb_pos >= 16 &&
+          item.a_mask[2:0] != 'b111 || csr.get_msb_pos >= 8 && item.a_mask[1:0] != 'b11 ||
           item.a_mask[0] != 'b1) begin
         return 0;
       end

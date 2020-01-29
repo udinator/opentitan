@@ -16,7 +16,7 @@
 class gpio_rand_intr_trigger_vseq extends gpio_base_vseq;
 
   constraint num_trans_c {
-    num_trans inside {[20:200]};
+    num_trans inside {[20 : 200]};
   }
 
   `uvm_object_utils(gpio_rand_intr_trigger_vseq)
@@ -50,8 +50,9 @@ class gpio_rand_intr_trigger_vseq extends gpio_base_vseq;
               `DV_CHECK_STD_RANDOMIZE_FATAL(gpio_i)
               `uvm_info(msg_id, $sformatf("Driving new gpio value 0x%0h", gpio_i), UVM_HIGH)
               cfg.gpio_vif.drive(gpio_i);
-              `DV_CHECK_STD_RANDOMIZE_WITH_FATAL(delay_before_gpio_change,
-                                                 delay_before_gpio_change inside {[1:5]};)
+              `DV_CHECK_STD_RANDOMIZE_WITH_FATAL(
+                  delay_before_gpio_change, delay_before_gpio_change inside {[1:5]};
+              )
               cfg.clk_rst_vif.wait_clks(delay_before_gpio_change);
             end
             gpio_tgl_cycle_done = 1'b1;
@@ -62,8 +63,10 @@ class gpio_rand_intr_trigger_vseq extends gpio_base_vseq;
               bit [TL_DW-1:0] reg_rd_data;
               `DV_CHECK_STD_RANDOMIZE_WITH_FATAL(rd_period, rd_period inside {[2:20]};)
               cfg.clk_rst_vif.wait_clks(rd_period);
-              `uvm_info(msg_id, $sformatf("Reading intr_state after %0d more clock cycles",
-                                          rd_period), UVM_HIGH)
+              `uvm_info(
+                  msg_id, $sformatf("Reading intr_state after %0d more clock cycles", rd_period),
+                      UVM_HIGH
+              )
               randcase
                 1: begin
                   csr_rd(.ptr(ral.data_in), .value(reg_rd_data));
@@ -75,19 +78,20 @@ class gpio_rand_intr_trigger_vseq extends gpio_base_vseq;
               // Randomly clear random set of interrupt state register bits
               if ($urandom_range(0, 1)) begin
                 `DV_CHECK_RANDOMIZE_FATAL(ral.intr_state)
-                `uvm_info(msg_id, $sformatf("Writing value 0x%0h to intr_state",
-                          ral.intr_state.get()), UVM_HIGH)
+                `uvm_info(
+                    msg_id, $sformatf("Writing value 0x%0h to intr_state", ral.intr_state.get()),
+                        UVM_HIGH
+                )
                 csr_update(ral.intr_state);
               end
-            end
-            while (gpio_tgl_cycle_done != 1'b1);
+            end while (gpio_tgl_cycle_done != 1'b1);
           end
         join
       end
 
       `uvm_info(msg_id, "End of Transaction", UVM_HIGH)
 
-    end // end for
+    end  // end for
 
   endtask : body
 

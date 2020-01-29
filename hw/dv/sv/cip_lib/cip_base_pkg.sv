@@ -17,7 +17,7 @@ package cip_base_pkg;
   `include "dv_macros.svh"
 
   // package variables
-  string msg_id = "cip_base_pkg";
+      string msg_id = "cip_base_pkg";
 
   // functions
 

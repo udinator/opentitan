@@ -14,8 +14,8 @@ class hmac_datapath_stress_vseq extends hmac_sanity_vseq;
 
   constraint msg_size_base_c {
     msg_size_base dist {
-        0       :/1,
-        [1:156] :/1
+      0 :/ 1,
+      [1 : 156] :/ 1
     };
   }
 

@@ -3,11 +3,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 
-class uart_monitor extends dv_base_monitor#(
-    .ITEM_T (uart_item),
-    .CFG_T  (uart_agent_cfg),
-    .COV_T  (uart_agent_cov)
-  );
+class uart_monitor extends dv_base_monitor #(
+    .ITEM_T(uart_item), .CFG_T(uart_agent_cfg), .COV_T(uart_agent_cov)
+);
   `uvm_component_utils(uart_monitor)
 
   bit obj_raised[uart_dir_e];
@@ -62,7 +60,9 @@ class uart_monitor extends dv_base_monitor#(
           @(cfg.vif.mon_tx_mp.mon_tx_cb);
           `uvm_info(`gtn, $sformatf("tx parity bit %0b", cfg.vif.uart_tx), UVM_DEBUG)
           item.parity = cfg.vif.uart_tx;
-          if (cfg.en_tx_checks && item.parity != `GET_PARITY(item.data, cfg.odd_parity)) begin
+          if (cfg.en_tx_checks && item.parity != `GET_PARITY(
+              item.data, cfg.odd_parity
+          )) begin
             `uvm_error(`gtn, "Parity failed")
           end
         end
@@ -112,7 +112,9 @@ class uart_monitor extends dv_base_monitor#(
           @(cfg.vif.mon_rx_mp.mon_rx_cb);
           `uvm_info(`gtn, $sformatf("rx parity bit %0b", cfg.vif.uart_rx), UVM_DEBUG)
           item.parity = cfg.vif.uart_rx;
-          if (cfg.en_rx_checks && item.parity != `GET_PARITY(item.data, cfg.odd_parity)) begin
+          if (cfg.en_rx_checks && item.parity != `GET_PARITY(
+              item.data, cfg.odd_parity
+          )) begin
             `uvm_error(`gtn, "Parity failed")
           end
         end
@@ -174,9 +176,9 @@ class uart_monitor extends dv_base_monitor#(
       cov.uart_reset_cg.sample(UartRx, cfg.vif.uart_rx_clk_pulses);
     end
     cfg.vif.uart_tx_clk_pulses = 0;
-    cfg.vif.uart_tx_clk        = 1;
+    cfg.vif.uart_tx_clk = 1;
     cfg.vif.uart_rx_clk_pulses = 0;
-    cfg.vif.uart_rx_clk        = 1;
+    cfg.vif.uart_rx_clk = 1;
     process_objections(UartTx, 0);
     process_objections(UartRx, 0);
     wait(!cfg.under_reset);
@@ -187,8 +189,7 @@ class uart_monitor extends dv_base_monitor#(
       `uvm_info(`gfn, $sformatf("raising objection for %0s", dir.name), UVM_HIGH)
       m_current_phase.raise_objection(this);
       obj_raised[dir] = 1'b1;
-    end
-    else if (!raise && obj_raised[dir]) begin
+    end else if (!raise && obj_raised[dir]) begin
       `uvm_info(`gfn, $sformatf("dropping objection for %0s", dir.name), UVM_HIGH)
       m_current_phase.drop_objection(this);
       obj_raised[dir] = 1'b0;

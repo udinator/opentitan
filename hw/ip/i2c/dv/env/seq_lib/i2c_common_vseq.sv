@@ -6,19 +6,19 @@ class i2c_common_vseq extends i2c_base_vseq;
   `uvm_object_utils(i2c_common_vseq)
 
   constraint num_trans_c {
-    num_trans inside {[1:2]};
+    num_trans inside {[1 : 2]};
   }
 
   `uvm_object_new
 
   virtual task body();
-    run_common_vseq_wrapper(num_trans); // inherit from cip_base_vseq.sv
+    run_common_vseq_wrapper(num_trans);  // inherit from cip_base_vseq.sv
   endtask : body
 
   // function to add csr exclusions of the given type using the csr_excl_item item
-  virtual function void add_csr_exclusions(string           csr_test_type,
-                                           csr_excl_item    csr_excl,
-                                           string           scope = "ral");
+  virtual function void add_csr_exclusions(
+      string csr_test_type, csr_excl_item csr_excl, string scope = "ral"
+  );
 
     // by default, apply all init, write, and write-read check (CsrNoExcl) for all registers
     // write exclusions - these should not apply to hw_reset test

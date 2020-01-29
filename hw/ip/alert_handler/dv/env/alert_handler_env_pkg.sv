@@ -20,8 +20,8 @@ package alert_handler_env_pkg;
 
   // parameters
   parameter uint ALERT_HANDLER_ADDR_MAP_SIZE = 2048;
-  parameter uint NUM_MAX_ESC_SEV             = 8;
-  parameter uint NUM_ALERT_HANDLER_CLASSES   = 4;
+  parameter uint NUM_MAX_ESC_SEV = 8;
+  parameter uint NUM_ALERT_HANDLER_CLASSES = 4;
 
   // types
   // forward declare classes to allow typedefs below

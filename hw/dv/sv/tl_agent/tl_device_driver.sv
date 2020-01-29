@@ -17,7 +17,7 @@ class tl_device_driver extends tl_base_driver;
       d_channel_thread();
       reset_thread();
     join_none
- endtask
+  endtask
 
   virtual task reset_thread();
     forever begin
@@ -37,7 +37,7 @@ class tl_device_driver extends tl_base_driver;
     int unsigned ready_delay;
     forever begin
       ready_delay = $urandom_range(cfg.a_ready_delay_min, cfg.a_ready_delay_max);
-      repeat(ready_delay) @(cfg.vif.device_cb);
+      repeat (ready_delay) @(cfg.vif.device_cb);
       cfg.vif.device_cb.d2h.a_ready <= 1'b1;
       @(cfg.vif.device_cb);
       cfg.vif.device_cb.d2h.a_ready <= 1'b0;
@@ -60,15 +60,15 @@ class tl_device_driver extends tl_base_driver;
         if (!cfg.vif.rst_n) break;
         else @(cfg.vif.device_cb);
       end
-      cfg.vif.device_cb.d2h.d_valid  <= 1'b1;
+      cfg.vif.device_cb.d2h.d_valid <= 1'b1;
       cfg.vif.device_cb.d2h.d_opcode <= tl_d_op_e'(rsp.d_opcode);
-      cfg.vif.device_cb.d2h.d_data   <= rsp.d_data;
+      cfg.vif.device_cb.d2h.d_data <= rsp.d_data;
       cfg.vif.device_cb.d2h.d_source <= rsp.d_source;
-      cfg.vif.device_cb.d2h.d_param  <= rsp.d_param;
-      cfg.vif.device_cb.d2h.d_error  <= rsp.d_error;
-      cfg.vif.device_cb.d2h.d_sink   <= rsp.d_sink;
-      cfg.vif.device_cb.d2h.d_user   <= rsp.d_user;
-      cfg.vif.device_cb.d2h.d_size   <= rsp.d_size;
+      cfg.vif.device_cb.d2h.d_param <= rsp.d_param;
+      cfg.vif.device_cb.d2h.d_error <= rsp.d_error;
+      cfg.vif.device_cb.d2h.d_sink <= rsp.d_sink;
+      cfg.vif.device_cb.d2h.d_user <= rsp.d_user;
+      cfg.vif.device_cb.d2h.d_size <= rsp.d_size;
       // bypass delay in case of reset
       if (cfg.vif.rst_n) @(cfg.vif.device_cb);
       while (!cfg.vif.device_cb.h2d.d_ready && cfg.vif.rst_n) @(cfg.vif.device_cb);
@@ -79,12 +79,12 @@ class tl_device_driver extends tl_base_driver;
 
   function void invalidate_d_channel();
     cfg.vif.device_cb.d2h.d_opcode <= tlul_pkg::tl_d_op_e'('x);
-    cfg.vif.device_cb.d2h.d_param <= '{default:'x};
-    cfg.vif.device_cb.d2h.d_size <= '{default:'x};
-    cfg.vif.device_cb.d2h.d_source <= '{default:'x};
-    cfg.vif.device_cb.d2h.d_sink <= '{default:'x};
-    cfg.vif.device_cb.d2h.d_data <= '{default:'x};
-    cfg.vif.device_cb.d2h.d_user <= '{default:'x};
+    cfg.vif.device_cb.d2h.d_param <= '{default: 'x};
+    cfg.vif.device_cb.d2h.d_size <= '{default: 'x};
+    cfg.vif.device_cb.d2h.d_source <= '{default: 'x};
+    cfg.vif.device_cb.d2h.d_sink <= '{default: 'x};
+    cfg.vif.device_cb.d2h.d_data <= '{default: 'x};
+    cfg.vif.device_cb.d2h.d_user <= '{default: 'x};
     cfg.vif.device_cb.d2h.d_error <= 1'bx;
     cfg.vif.device_cb.d2h.d_valid <= 1'b0;
   endfunction : invalidate_d_channel

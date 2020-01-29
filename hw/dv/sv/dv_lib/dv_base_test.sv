@@ -2,18 +2,20 @@
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
-class dv_base_test #(type CFG_T = dv_base_env_cfg,
-                     type ENV_T = dv_base_env) extends uvm_test;
+class dv_base_test #(
+    type CFG_T = dv_base_env_cfg,
+    type ENV_T = dv_base_env
+) extends uvm_test;
   `uvm_component_param_utils(dv_base_test #(CFG_T, ENV_T))
 
-  ENV_T             env;
-  CFG_T             cfg;
-  bit               run_test_seq = 1'b1;
-  string            test_seq_s;
+  ENV_T env;
+  CFG_T cfg;
+  bit run_test_seq = 1'b1;
+  string test_seq_s;
 
-  uint   max_quit_count  = 1;
-  uint64 test_timeout_ns = 200_000_000; // 200ms
-  uint   drain_time_ns   = 2_000;  // 2us
+  uint max_quit_count = 1;
+  uint64 test_timeout_ns = 200_000_000;  // 200ms
+  uint drain_time_ns = 2_000;  // 2us
 
   `uvm_component_new
 
@@ -28,7 +30,7 @@ class dv_base_test #(type CFG_T = dv_base_env_cfg,
     // don't add args for initialize. Use default value instead
     cfg.initialize();
     `DV_CHECK_RANDOMIZE_FATAL(cfg)
-    uvm_config_db#(CFG_T)::set(this, "env", "cfg", cfg);
+    uvm_config_db #(CFG_T)::set(this, "env", "cfg", cfg);
 
     // knob to en/dis scb (enabled by default)
     void'($value$plusargs("en_scb=%0b", cfg.en_scb));

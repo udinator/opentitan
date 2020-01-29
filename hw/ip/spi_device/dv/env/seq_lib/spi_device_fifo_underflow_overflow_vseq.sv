@@ -37,7 +37,7 @@ class spi_device_fifo_underflow_overflow_vseq extends spi_device_txrx_vseq;
       // is updated. Wait until data transfer is done
       if (rx_avail_bytes == `get_rx_allocated_sram_size_bytes) begin
         csr_spinwait(.ptr(ral.async_fifo_level.rxlvl), .exp_data(0));
-        cfg.clk_rst_vif.wait_clks(2); // 2 cycle for fifo ptr to be updated
+        cfg.clk_rst_vif.wait_clks(2);  // 2 cycle for fifo ptr to be updated
       end
     end
 

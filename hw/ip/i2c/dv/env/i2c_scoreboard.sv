@@ -3,10 +3,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 class i2c_scoreboard extends cip_base_scoreboard #(
-    .CFG_T(i2c_env_cfg),
-    .RAL_T(i2c_reg_block),
-    .COV_T(i2c_env_cov)
-  );
+    .CFG_T(i2c_env_cfg), .RAL_T(i2c_reg_block), .COV_T(i2c_env_cov)
+);
   `uvm_component_utils(i2c_scoreboard)
 
   // local variables
@@ -77,8 +75,9 @@ class i2c_scoreboard extends cip_base_scoreboard #(
     // On reads, if do_read_check, is set, then check mirrored_value against item.d_data
     if (!write && channel == DataChannel) begin
       if (do_read_check) begin
-        `DV_CHECK_EQ(csr.get_mirrored_value(), item.d_data,
-                     $sformatf("reg name: %0s", csr.get_full_name()))
+        `DV_CHECK_EQ(
+            csr.get_mirrored_value(), item.d_data, $sformatf("reg name: %0s", csr.get_full_name())
+        )
       end
       void'(csr.predict(.value(item.d_data), .kind(UVM_PREDICT_READ)));
     end

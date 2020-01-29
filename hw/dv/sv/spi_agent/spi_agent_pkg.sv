@@ -34,4 +34,4 @@ package spi_agent_pkg;
   `include "spi_agent.sv"
   `include "spi_seq_list.sv"
 
-endpackage: spi_agent_pkg
+endpackage : spi_agent_pkg

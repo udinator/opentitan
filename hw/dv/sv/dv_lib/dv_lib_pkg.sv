@@ -14,7 +14,7 @@ package dv_lib_pkg;
   `include "dv_macros.svh"
 
   // package variables
-  string msg_id = "dv_lib_pkg";
+      string msg_id = "dv_lib_pkg";
 
   // package sources
   // base ral

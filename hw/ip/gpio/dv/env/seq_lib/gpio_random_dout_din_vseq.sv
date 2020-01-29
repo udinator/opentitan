@@ -22,7 +22,7 @@ class gpio_random_dout_din_vseq extends gpio_base_vseq;
     // no_pullup_pulldown is passed to have no pullup/pulldown
     set_gpio_pulls(.pu(cfg.pullup_en), .pd(cfg.pulldown_en));
     super.dut_init(reset_kind);
-  endtask: dut_init
+  endtask : dut_init
 
   task body();
     `uvm_info(`gfn, $sformatf("num_trans = %0d", num_trans), UVM_HIGH)
@@ -37,8 +37,9 @@ class gpio_random_dout_din_vseq extends gpio_base_vseq;
           // gpio input to drive
           bit [NUM_GPIOS-1:0] gpio_i;
           bit [NUM_GPIOS-1:0] data_in;
-          `uvm_info(`gfn, $sformatf("Transaction-%0d: drive random value to gpio_i", tr_num),
-                    UVM_HIGH)
+          `uvm_info(
+              `gfn, $sformatf("Transaction-%0d: drive random value to gpio_i", tr_num), UVM_HIGH
+          )
           `DV_CHECK_STD_RANDOMIZE_FATAL(gpio_i)
           // drive gpio_vif after setting all output enables to 0's
           drive_gpio_in(gpio_i);
@@ -48,8 +49,10 @@ class gpio_random_dout_din_vseq extends gpio_base_vseq;
         end
         // write new value(s) to gpio out related register(s)
         1: begin
-          `uvm_info(`gfn, $sformatf("Transaction-%0d: program register(s) to random value(s)",
-                                    tr_num), UVM_HIGH)
+          `uvm_info(
+              `gfn, $sformatf("Transaction-%0d: program register(s) to random value(s)", tr_num),
+                  UVM_HIGH
+          )
           // First, stop driving gpio_i
           undrive_gpio_in();
 
@@ -86,7 +89,7 @@ class gpio_random_dout_din_vseq extends gpio_base_vseq;
       endcase
       `uvm_info(`gfn, $sformatf("End of Transaction-%0d", tr_num), UVM_HIGH)
 
-    end // end for
+    end  // end for
 
   endtask : body
 

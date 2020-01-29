@@ -8,24 +8,21 @@ interface uart_if #(time UartDefaultClkPeriodNs = 104166.667ns) ();
   logic uart_tx_en;
 
   // generate local clk
-  time  uart_clk_period_ns = UartDefaultClkPeriodNs;
-  bit   uart_tx_clk = 1'b1;
-  int   uart_tx_clk_pulses = 0;
-  bit   uart_rx_clk = 1'b1;
-  int   uart_rx_clk_pulses = 0;
+  time uart_clk_period_ns = UartDefaultClkPeriodNs;
+  bit uart_tx_clk = 1'b1;
+  int uart_tx_clk_pulses = 0;
+  bit uart_rx_clk = 1'b1;
+  int uart_rx_clk_pulses = 0;
 
-  clocking mon_tx_cb @(negedge uart_tx_clk);
-    input  #10ns uart_tx;
+  clocking mon_tx_cb @(negedge uart_tx_clk); input #10ns uart_tx;
   endclocking
   modport mon_tx_mp(clocking mon_tx_cb);
 
-  clocking drv_rx_cb @(posedge uart_rx_clk);
-    output uart_rx;
+  clocking drv_rx_cb @(posedge uart_rx_clk); output uart_rx;
   endclocking
   modport drv_rx_mp(clocking drv_rx_cb);
 
-  clocking mon_rx_cb @(negedge uart_rx_clk);
-    input  #10ns uart_rx;
+  clocking mon_rx_cb @(negedge uart_rx_clk); input #10ns uart_rx;
   endclocking
   modport mon_rx_mp(clocking mon_rx_cb);
 

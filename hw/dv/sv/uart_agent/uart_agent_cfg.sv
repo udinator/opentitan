@@ -4,12 +4,12 @@
 
 class uart_agent_cfg extends dv_base_agent_cfg;
 
-  bit is_active     = 1'b1; // active driver or passive monitor
-  bit en_cov        = 1'b1; // enable coverage
-  bit en_rx_checks  = 1'b1; // enable RX checks (implemented in monitor)
-  bit en_tx_checks  = 1'b1; // enable TX checks (implemented in monitor)
-  bit en_rx_monitor = 1'b1; // enable RX monitor
-  bit en_tx_monitor = 1'b1; // enable TX monitor
+  bit is_active = 1'b1;  // active driver or passive monitor
+  bit en_cov = 1'b1;  // enable coverage
+  bit en_rx_checks = 1'b1;  // enable RX checks (implemented in monitor)
+  bit en_tx_checks = 1'b1;  // enable TX checks (implemented in monitor)
+  bit en_rx_monitor = 1'b1;  // enable RX monitor
+  bit en_tx_monitor = 1'b1;  // enable TX monitor
 
   // device specific cfg
   baud_rate_e baud_rate;
@@ -23,8 +23,8 @@ class uart_agent_cfg extends dv_base_agent_cfg;
   virtual uart_if vif;
 
   `uvm_object_utils_begin(uart_agent_cfg)
-    `uvm_field_int(is_active,    UVM_DEFAULT)
-    `uvm_field_int(en_cov,       UVM_DEFAULT)
+    `uvm_field_int(is_active, UVM_DEFAULT)
+    `uvm_field_int(en_cov, UVM_DEFAULT)
     `uvm_field_int(en_rx_checks, UVM_DEFAULT)
     `uvm_field_int(en_tx_checks, UVM_DEFAULT)
   `uvm_object_utils_end
@@ -49,8 +49,8 @@ class uart_agent_cfg extends dv_base_agent_cfg;
     under_reset = 0;
     vif.reset_uart_rx();
     if (re_enable_chk_mon) begin
-      en_rx_checks  = 1;
-      en_tx_checks  = 1;
+      en_rx_checks = 1;
+      en_tx_checks = 1;
       en_rx_monitor = 1;
       en_tx_monitor = 1;
     end

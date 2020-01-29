@@ -20,8 +20,9 @@ package i2c_agent_pkg;
   typedef class i2c_agent_cfg;
 
   // reuse dv_base_seqeuencer as is with the right parameter set
-  typedef dv_base_sequencer #(.ITEM_T     (i2c_item),
-                              .CFG_T      (i2c_agent_cfg)) i2c_sequencer;
+  typedef dv_base_sequencer #(
+      .ITEM_T(i2c_item), .CFG_T(i2c_agent_cfg)
+  ) i2c_sequencer;
 
   // functions
 
@@ -34,4 +35,4 @@ package i2c_agent_pkg;
   `include "i2c_agent.sv"
   `include "i2c_seq_list.sv"
 
-  endpackage: i2c_agent_pkg
+endpackage : i2c_agent_pkg

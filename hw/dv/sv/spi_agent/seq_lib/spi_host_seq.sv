@@ -11,17 +11,19 @@ class spi_host_seq extends spi_base_seq;
 
   // constrain size of data sent / received to be at most 64kB
   constraint data_size_c {
-    data.size() inside {[1:65536]};
+    data.size() inside {[1 : 65536]};
   }
 
   virtual task body();
     req = spi_item::type_id::create("req");
     start_item(req);
-    `DV_CHECK_RANDOMIZE_WITH_FATAL(req,
-                                   data.size() == local::data.size();
+    `DV_CHECK_RANDOMIZE_WITH_FATAL(
+        req,
+            data.size() == local::data.size();
                                    foreach (data[i]) {
                                      data[i] == local::data[i];
-                                   })
+                                   }
+    )
     finish_item(req);
     get_response(rsp);
   endtask

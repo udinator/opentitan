@@ -13,7 +13,7 @@ class ibex_mem_intf_slave_sequencer extends uvm_sequencer #(ibex_mem_intf_seq_it
 
   `uvm_component_utils(ibex_mem_intf_slave_sequencer)
 
-  function new (string name, uvm_component parent);
+  function new(string name, uvm_component parent);
     super.new(name, parent);
     addr_ph_port = new("addr_ph_port_sequencer", this);
   endfunction : new

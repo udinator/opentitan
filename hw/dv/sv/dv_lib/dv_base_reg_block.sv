@@ -6,7 +6,7 @@
 class dv_base_reg_block extends uvm_reg_block;
   `uvm_object_utils(dv_base_reg_block)
 
-  function new (string name = "", int has_coverage = UVM_NO_COVERAGE);
+  function new(string name = "", int has_coverage = UVM_NO_COVERAGE);
     super.new(name, has_coverage);
   endfunction
 

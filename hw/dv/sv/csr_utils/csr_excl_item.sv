@@ -30,7 +30,7 @@ class csr_excl_item extends uvm_object;
   // arg csr_excl_type_e csr_excl_type: exclusion type
   function bit is_excl(uvm_object obj, csr_excl_type_e csr_excl_type);
     uvm_reg_block blk;
-    uvm_reg       csr;
+    uvm_reg csr;
 
     // if supplied obj is a uvm_reg_block or uvm_reg, then its parent is a uvm_reg_block
     // check if obj's parent is excluded
@@ -54,17 +54,20 @@ class csr_excl_item extends uvm_object;
   local function bit has_excl(string obj, csr_excl_type_e csr_excl_type);
     // check if obj exists verbatim
     if (exclusions.exists(obj)) begin
-      `uvm_info(`gfn, $sformatf("has_excl: found exact excl match for %0s: %0s",
-                                obj, exclusions[obj].name()), UVM_DEBUG)
+      `uvm_info(
+          `gfn, $sformatf("has_excl: found exact excl match for %0s: %0s", obj, exclusions[obj
+                          ].name()), UVM_DEBUG
+      )
       // check if bit(s) corresponding to csr_excl_type are set
       if ((exclusions[obj] & csr_excl_type) != CsrNoExcl) return 1'b1;
-    end
-    else begin
+    end else begin
       // attempt glob style matching
       foreach (exclusions[str]) begin
         if (!uvm_re_match(str, obj)) begin
-          `uvm_info(`gfn, $sformatf("has_excl: found glob excl match for %0s(%0s): %0s",
-                                    obj, str, exclusions[str].name()), UVM_DEBUG)
+          `uvm_info(
+              `gfn, $sformatf("has_excl: found glob excl match for %0s(%0s): %0s", obj, str,
+                              exclusions[str].name()), UVM_DEBUG
+          )
           // check if bit(s) corresponding to csr_excl_type are set
           if ((exclusions[str] & csr_excl_type) != CsrNoExcl) return 1'b1;
         end
@@ -76,8 +79,10 @@ class csr_excl_item extends uvm_object;
   // print all exclusions for ease of debug (call this ideally after adding all exclusions)
   virtual function void print_exclusions(uvm_verbosity verbosity = UVM_HIGH);
     foreach (exclusions[item]) begin
-      `uvm_info(`gfn, $sformatf("CSR/field [%0s] excluded with %0s",
-                                item, exclusions[item].name()), verbosity)
+      `uvm_info(
+          `gfn, $sformatf("CSR/field [%0s] excluded with %0s", item, exclusions[item].name()),
+              verbosity
+      )
     end
   endfunction
 

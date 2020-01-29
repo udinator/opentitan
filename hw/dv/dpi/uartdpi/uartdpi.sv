@@ -3,30 +3,28 @@
 // SPDX-License-Identifier: Apache-2.0
 
 module uartdpi #(
-  parameter BAUD = 'x,
-  parameter FREQ = 'x,
-  parameter string NAME = "uart0"
-)(
-  input  logic clk_i,
-  input  logic rst_ni,
-
-  output logic tx_o,
-  input  logic rx_i
+    parameter BAUD = 'x, parameter FREQ = 'x, parameter string NAME = "uart0"
+) (
+    input logic clk_i, input logic rst_ni, output logic tx_o, input logic rx_i
 );
 
-  localparam CYCLES_PER_SYMBOL = FREQ/BAUD;
+  localparam CYCLES_PER_SYMBOL = FREQ / BAUD;
 
-  import "DPI-C" function
-    chandle uartdpi_create(input string name);
+  import "DPI-C" function chandle uartdpi_create(
+      input string name
+  );
 
-  import "DPI-C" function
-    byte uartdpi_read(input chandle ctx);
+  import "DPI-C" function byte uartdpi_read(
+      input chandle ctx
+  );
 
-  import "DPI-C" function
-    int uartdpi_can_read(input chandle ctx);
+  import "DPI-C" function int uartdpi_can_read(
+      input chandle ctx
+  );
 
-  import "DPI-C" function
-    void uartdpi_write(input chandle ctx, int data);
+  import "DPI-C" function void uartdpi_write(
+      input chandle ctx, int data
+  );
 
   chandle ctx;
   int file_handle;
@@ -40,8 +38,8 @@ module uartdpi #(
 
   // TX
   reg txactive;
-  int  txcount;
-  int  txcyccount;
+  int txcount;
+  int txcyccount;
   reg [9:0] txsymbol;
 
   always_ff @(negedge clk_i or negedge rst_ni) begin
@@ -63,10 +61,8 @@ module uartdpi #(
         tx_o <= txsymbol[txcount];
         if (txcyccount == CYCLES_PER_SYMBOL) begin
           txcyccount <= 0;
-          if (txcount == 9)
-            txactive <= 0;
-          else
-            txcount <= txcount + 1;
+          if (txcount == 9) txactive <= 0;
+          else txcount <= txcount + 1;
         end
       end
     end
@@ -92,7 +88,7 @@ module uartdpi #(
         end
       end else begin
         if (rxcount == 0) begin
-          if (rxcyccount == CYCLES_PER_SYMBOL/2) begin
+          if (rxcyccount == CYCLES_PER_SYMBOL / 2) begin
             if (rx_i) begin
               rxactive <= 0;
             end else begin
@@ -102,7 +98,7 @@ module uartdpi #(
           end
         end else if (rxcount <= 8) begin
           if (rxcyccount == CYCLES_PER_SYMBOL) begin
-            rxsymbol[rxcount-1] <= rx_i;
+            rxsymbol[rxcount - 1] <= rx_i;
             rxcount <= rxcount + 1;
             rxcyccount <= 0;
           end
@@ -116,7 +112,7 @@ module uartdpi #(
           end
         end
       end
-    end // else: !if(rst)
+    end  // else: !if(rst)
   end
 
 endmodule

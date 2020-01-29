@@ -3,20 +3,25 @@
 // SPDX-License-Identifier: Apache-2.0
 
 class gpio_base_vseq extends cip_base_vseq #(
-        .CFG_T               (gpio_env_cfg),
-        .RAL_T               (gpio_reg_block),
-        .COV_T               (gpio_env_cov),
-        .VIRTUAL_SEQUENCER_T (gpio_virtual_sequencer)
-    );
+    .CFG_T(gpio_env_cfg),
+    .RAL_T(gpio_reg_block),
+    .COV_T(gpio_env_cov),
+    .VIRTUAL_SEQUENCER_T(gpio_virtual_sequencer)
+);
 
   // Delay between consecutive transactions
   rand uint delay;
 
   constraint delay_c {
-    delay dist {0 :/ 20, [1:5] :/ 40, [6:15] :/ 30, [20:25] :/ 10};
+    delay dist {
+      0 :/ 20,
+      [1 : 5] :/ 40,
+      [6 : 15] :/ 30,
+      [20 : 25] :/ 10
+    };
   }
   constraint num_trans_c {
-    num_trans inside {[20:200]};
+    num_trans inside {[20 : 200]};
   }
 
   `uvm_object_utils(gpio_base_vseq)
@@ -41,11 +46,11 @@ class gpio_base_vseq extends cip_base_vseq #(
   //       If we pass both pu and pd to be 1, gpio pullup will be used.
   protected function void set_gpio_pulls(bit pu = 1'b1, bit pd = 1'b0);
     bit no_pullup_pulldown;
-    cfg.pullup_en   = pu;
+    cfg.pullup_en = pu;
     cfg.pulldown_en = pd;
     if ($value$plusargs("no_pullup_pulldown=%0b", no_pullup_pulldown)) begin
       if (no_pullup_pulldown == 1'b1) begin
-        cfg.pullup_en   = 1'b0;
+        cfg.pullup_en = 1'b0;
         cfg.pulldown_en = 1'b0;
       end
     end

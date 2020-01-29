@@ -12,7 +12,7 @@ package scoreboard_pkg;
     kDstPort
   } port_dir_e;
 
-  typedef enum bit [1:0] {
+  typedef enum bit [1:0]{
     kInOrderCheck = 2'b0,
     kOutOfOrderCheck,
     kCustomCheck

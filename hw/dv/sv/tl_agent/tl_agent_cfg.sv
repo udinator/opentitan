@@ -8,7 +8,7 @@
 // ---------------------------------------------
 class tl_agent_cfg extends dv_base_agent_cfg;
 
-  virtual tl_if  vif;
+  virtual tl_if vif;
   // TileLink conformance level supported by this agent
   // Right now only TL-UL is supported
   tl_level_e tl_level = kTLUL;
@@ -41,12 +41,12 @@ class tl_agent_cfg extends dv_base_agent_cfg;
   int unsigned d_valid_delay_max = 10;
 
   `uvm_object_utils_begin(tl_agent_cfg)
-    `uvm_field_int(max_outstanding_req,   UVM_DEFAULT)
+    `uvm_field_int(max_outstanding_req, UVM_DEFAULT)
     `uvm_field_enum(tl_level_e, tl_level, UVM_DEFAULT)
-    `uvm_field_int(a_ready_delay_min,     UVM_DEFAULT)
-    `uvm_field_int(a_ready_delay_max,     UVM_DEFAULT)
-    `uvm_field_int(d_ready_delay_min,     UVM_DEFAULT)
-    `uvm_field_int(d_ready_delay_max,     UVM_DEFAULT)
+    `uvm_field_int(a_ready_delay_min, UVM_DEFAULT)
+    `uvm_field_int(a_ready_delay_max, UVM_DEFAULT)
+    `uvm_field_int(d_ready_delay_min, UVM_DEFAULT)
+    `uvm_field_int(d_ready_delay_max, UVM_DEFAULT)
   `uvm_object_utils_end
   `uvm_object_new
 

@@ -5,13 +5,13 @@
 // ---------------------------------------------
 // Alert agent
 // ---------------------------------------------
-class alert_esc_agent extends dv_base_agent#(
-    .CFG_T           (alert_esc_agent_cfg),
-    .DRIVER_T        (alert_esc_base_driver),
-    .SEQUENCER_T     (alert_esc_sequencer),
-    .MONITOR_T       (alert_esc_base_monitor),
-    .COV_T           (alert_esc_agent_cov)
-  );
+class alert_esc_agent extends dv_base_agent #(
+    .CFG_T(alert_esc_agent_cfg),
+    .DRIVER_T(alert_esc_base_driver),
+    .SEQUENCER_T(alert_esc_sequencer),
+    .MONITOR_T(alert_esc_base_monitor),
+    .COV_T(alert_esc_agent_cov)
+);
 
   `uvm_component_utils(alert_esc_agent)
 
@@ -19,7 +19,7 @@ class alert_esc_agent extends dv_base_agent#(
 
   function void build_phase(uvm_phase phase);
     alert_esc_agent_cfg cfg;
-    if (!uvm_config_db#(CFG_T)::get(this, "", "cfg", cfg)) begin
+    if (!uvm_config_db #(CFG_T)::get(this, "", "cfg", cfg)) begin
       `uvm_fatal(`gfn, $sformatf("failed to get %s from uvm_config_db", cfg.get_type_name()))
     end
     // override monitor
@@ -48,7 +48,7 @@ class alert_esc_agent extends dv_base_agent#(
 
     super.build_phase(phase);
     // get alert_esc_if handle
-    if (!uvm_config_db#(virtual alert_esc_if)::get(this, "", "vif", cfg.vif)) begin
+    if (!uvm_config_db #(virtual alert_esc_if)::get(this, "", "vif", cfg.vif)) begin
       `uvm_fatal(`gfn, "failed to get alert_esc_if handle from uvm_config_db")
     end
   endfunction

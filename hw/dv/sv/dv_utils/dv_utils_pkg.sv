@@ -12,20 +12,20 @@ package dv_utils_pkg;
   `include "uvm_macros.svh"
 
   // common parameters used across all benches
-  parameter int NUM_MAX_INTERRUPTS  = 32;
-  parameter int NUM_MAX_ALERTS      = 32;
+  parameter int NUM_MAX_INTERRUPTS = 32;
+  parameter int NUM_MAX_ALERTS = 32;
 
   // types & variables
   typedef bit [31:0] uint;
-  typedef bit [7:0]  uint8;
+  typedef bit [7:0] uint8;
   typedef bit [15:0] uint16;
   typedef bit [31:0] uint32;
   typedef bit [63:0] uint64;
 
   // typedef parameterized pins_if for ease of implementation for interrupts and alerts
   typedef virtual pins_if #(NUM_MAX_INTERRUPTS) intr_vif;
-  typedef virtual pins_if #(1)                  devmode_vif;
-  typedef virtual pins_if #(1)                  tlul_assert_ctrl_vif;
+  typedef virtual pins_if #(1) devmode_vif;
+  typedef virtual pins_if #(1) tlul_assert_ctrl_vif;
 
   // interface direction / mode - Host or Device
   typedef enum bit {
@@ -35,10 +35,10 @@ package dv_utils_pkg;
 
   // speed for the clock
   typedef enum int {
-    ClkFreq24Mhz  = 24,
-    ClkFreq25Mhz  = 25,
-    ClkFreq48Mhz  = 48,
-    ClkFreq50Mhz  = 50,
+    ClkFreq24Mhz = 24,
+    ClkFreq25Mhz = 25,
+    ClkFreq48Mhz = 48,
+    ClkFreq50Mhz = 50,
     ClkFreq100Mhz = 100
   } clk_freq_mhz_e;
 
@@ -63,7 +63,9 @@ package dv_utils_pkg;
   string msg_id = "dv_utils_pkg";
 
   // Simple function to set max errors before quitting sim
-  function automatic void set_max_quit_count(int n);
+  function automatic void set_max_quit_count(
+      int n
+  );
     uvm_report_server report_server = uvm_report_server::get_server();
     report_server.set_max_quit_count(n);
   endfunction
@@ -75,42 +77,49 @@ package dv_utils_pkg;
   endfunction
 
   // task that waits for the specfied timeout
-  task automatic wait_timeout(input uint    timeout_ns,
-                              input string  error_msg_id  = msg_id,
-                              input string  error_msg     = "timeout occurred!",
-                              input bit     report_fatal  = 1);
+  task automatic wait_timeout(
+      input uint timeout_ns,
+      input string error_msg_id = msg_id,
+      input string error_msg = "timeout occurred!",
+      input bit report_fatal = 1
+  );
     #(timeout_ns * 1ns);
     if (report_fatal) `uvm_fatal(error_msg_id, error_msg)
-    else              `uvm_error(error_msg_id, error_msg)
+    else `uvm_error(error_msg_id, error_msg)
   endtask : wait_timeout
 
   // get masked data based on provided byte mask; if csr reg handle is provided (optional) then
   // masked bytes from csr's mirrored value are returned, else masked bytes are 0's
-  function automatic bit [TL_DW-1:0] get_masked_data(bit [TL_DW-1:0]  data,
-                                                     bit [TL_DBW-1:0] mask,
-                                                     uvm_reg          csr = null);
+  function automatic bit [TL_DW-1:0] get_masked_data(
+      bit [TL_DW-1:0] data, bit [TL_DBW-1:0] mask, uvm_reg csr = null
+  );
     bit [TL_DW-1:0] csr_data;
     csr_data = (csr != null) ? csr.get_mirrored_value() : '0;
     get_masked_data = data;
-    foreach (mask[i])
-      if (~mask[i]) get_masked_data[i * 8 +: 8] = csr_data[i * 8 +: 8];
+    foreach (mask[i]) if (~mask[i]) get_masked_data[i * 8 +: 8] = csr_data[i * 8 +: 8];
   endfunction
 
   // get absolute value of the input. Usage: absolute(val) or absolute(a - b)
-  function automatic uint absolute(int val);
+  function automatic uint absolute(
+      int val
+  );
     return val >= 0 ? val : -val;
   endfunction
 
   // endian swap
-  function automatic logic [31:0] endian_swap(logic [31:0] data);
-    return {<<8{data}};
+  function automatic logic [31:0] endian_swap(
+      logic [31:0] data
+  );
+    return{<<8{data}};
   endfunction
 
   // create a sequence by name and return the handle of uvm_sequence
-  function automatic uvm_sequence create_seq_by_name(string seq_name);
-    uvm_object      obj;
-    uvm_factory     factory;
-    uvm_sequence    seq;
+  function automatic uvm_sequence create_seq_by_name(
+      string seq_name
+  );
+    uvm_object obj;
+    uvm_factory factory;
+    uvm_sequence seq;
 
     factory = uvm_factory::get();
     obj = factory.create_object_by_name(seq_name, "", seq_name);

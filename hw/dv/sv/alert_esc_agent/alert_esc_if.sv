@@ -5,34 +5,22 @@
 // ---------------------------------------------
 // Alert interface
 // ---------------------------------------------
-interface alert_esc_if(input clk, input rst_n);
+interface alert_esc_if (input clk, input rst_n);
   wire prim_pkg::alert_tx_t alert_tx;
   wire prim_pkg::alert_rx_t alert_rx;
   wire prim_pkg::esc_tx_t esc_tx;
   wire prim_pkg::esc_rx_t esc_rx;
 
-  clocking sender_cb @(posedge clk);
-    input  rst_n;
-    output alert_tx;
-    input  alert_rx;
-    output esc_tx;
-    input  esc_rx;
+  clocking sender_cb @(posedge clk); input rst_n; output alert_tx; input alert_rx; output esc_tx;
+      input esc_rx;
   endclocking
 
-  clocking receiver_cb @(posedge clk);
-    input  rst_n;
-    input  alert_tx;
-    output alert_rx;
-    input  esc_tx;
-    output esc_rx;
+  clocking receiver_cb @(posedge clk); input rst_n; input alert_tx; output alert_rx; input esc_tx;
+      output esc_rx;
   endclocking
 
-  clocking monitor_cb @(posedge clk);
-    input rst_n;
-    input alert_tx;
-    input alert_rx;
-    input esc_tx;
-    input esc_rx;
+  clocking monitor_cb @(posedge clk); input rst_n; input alert_tx; input alert_rx; input esc_tx;
+      input esc_rx;
   endclocking
 
   // tasks for alert sender/receiver pairs
@@ -132,4 +120,4 @@ interface alert_esc_if(input clk, input rst_n);
     return monitor_cb.esc_rx.resp_p;
   endfunction
 
-endinterface: alert_esc_if
+endinterface : alert_esc_if

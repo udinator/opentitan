@@ -3,15 +3,13 @@
 // SPDX-License-Identifier: Apache-2.0
 
 class i2c_monitor extends dv_base_monitor #(
-    .ITEM_T (i2c_item),
-    .CFG_T  (i2c_agent_cfg),
-    .COV_T  (i2c_agent_cov)
-  );
+    .ITEM_T(i2c_item), .CFG_T(i2c_agent_cfg), .COV_T(i2c_agent_cov)
+);
   `uvm_component_utils(i2c_monitor)
 
   // the base class provides the following handles for use:
-  i2c_agent_cfg  cfg;
-  i2c_agent_cov  cov;
+  i2c_agent_cfg cfg;
+  i2c_agent_cov cov;
 
   // analize ports
   //uvm_analysis_port #(i2c_item) analysis_port;

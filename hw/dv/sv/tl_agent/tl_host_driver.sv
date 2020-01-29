@@ -8,7 +8,7 @@
 // ---------------------------------------------
 class tl_host_driver extends tl_base_driver;
 
-  tl_seq_item    pending_a_req[$];
+  tl_seq_item pending_a_req[$];
   bit reset_asserted;
 
   `uvm_component_utils(tl_host_driver)
@@ -67,21 +67,21 @@ class tl_host_driver extends tl_base_driver;
     // wait until no outstanding transaction with same source id
     while (is_source_in_pending_req(req.a_source) & !reset_asserted) @(cfg.vif.host_cb);
     cfg.vif.host_cb.h2d.a_address <= req.a_addr;
-    cfg.vif.host_cb.h2d.a_opcode  <= tl_a_op_e'(req.a_opcode);
-    cfg.vif.host_cb.h2d.a_size    <= req.a_size;
-    cfg.vif.host_cb.h2d.a_param   <= req.a_param;
-    cfg.vif.host_cb.h2d.a_data    <= req.a_data;
-    cfg.vif.host_cb.h2d.a_mask    <= req.a_mask;
-    cfg.vif.host_cb.h2d.a_user    <= '0;
-    cfg.vif.host_cb.h2d.a_source  <= req.a_source;
-    cfg.vif.host_cb.h2d.a_valid   <= 1'b1;
+    cfg.vif.host_cb.h2d.a_opcode <= tl_a_op_e'(req.a_opcode);
+    cfg.vif.host_cb.h2d.a_size <= req.a_size;
+    cfg.vif.host_cb.h2d.a_param <= req.a_param;
+    cfg.vif.host_cb.h2d.a_data <= req.a_data;
+    cfg.vif.host_cb.h2d.a_mask <= req.a_mask;
+    cfg.vif.host_cb.h2d.a_user <= '0;
+    cfg.vif.host_cb.h2d.a_source <= req.a_source;
+    cfg.vif.host_cb.h2d.a_valid <= 1'b1;
     // bypass delay in case of reset
     if (!reset_asserted) @(cfg.vif.host_cb);
-    while(!cfg.vif.host_cb.d2h.a_ready && !reset_asserted) @(cfg.vif.host_cb);
+    while (!cfg.vif.host_cb.d2h.a_ready && !reset_asserted) @(cfg.vif.host_cb);
     invalidate_a_channel();
     seq_item_port.item_done();
-    if (reset_asserted) seq_item_port.put_response(req); // if reset, skip data phase
-    else                pending_a_req.push_back(req);
+    if (reset_asserted) seq_item_port.put_response(req);  // if reset, skip data phase
+    else pending_a_req.push_back(req);
     `uvm_info(get_full_name(), $sformatf("Req sent: %0s", req.convert2string()), UVM_HIGH)
   endtask : send_a_channel_request
 
@@ -105,27 +105,31 @@ class tl_host_driver extends tl_base_driver;
           if ((pending_a_req[i].a_source == cfg.vif.host_cb.d2h.d_source) | reset_asserted) begin
             rsp = pending_a_req[i];
             rsp.d_opcode = cfg.vif.host_cb.d2h.d_opcode;
-            rsp.d_data   = cfg.vif.host_cb.d2h.d_data;
-            rsp.d_param  = cfg.vif.host_cb.d2h.d_param;
-            rsp.d_error  = cfg.vif.host_cb.d2h.d_error;
-            rsp.d_sink   = cfg.vif.host_cb.d2h.d_sink;
-            rsp.d_size   = cfg.vif.host_cb.d2h.d_size;
-            rsp.d_user   = cfg.vif.host_cb.d2h.d_user;
+            rsp.d_data = cfg.vif.host_cb.d2h.d_data;
+            rsp.d_param = cfg.vif.host_cb.d2h.d_param;
+            rsp.d_error = cfg.vif.host_cb.d2h.d_error;
+            rsp.d_sink = cfg.vif.host_cb.d2h.d_sink;
+            rsp.d_size = cfg.vif.host_cb.d2h.d_size;
+            rsp.d_user = cfg.vif.host_cb.d2h.d_user;
             // make sure every req has a rsp with same source even during reset
             if (reset_asserted) rsp.d_source = rsp.a_source;
-            else                rsp.d_source = cfg.vif.host_cb.d2h.d_source;
+            else rsp.d_source = cfg.vif.host_cb.d2h.d_source;
             req_found = 1'b1;
             seq_item_port.put_response(rsp);
             pending_a_req.delete(i);
-            `uvm_info(get_full_name(), $sformatf("Got response %0s, pending req:%0d",
-                                       rsp.convert2string(), pending_a_req.size()), UVM_HIGH)
+            `uvm_info(
+                get_full_name(), $sformatf("Got response %0s, pending req:%0d", rsp.convert2string(
+                    ), pending_a_req.size()), UVM_HIGH
+            )
             break;
           end
         end
 
         if (!req_found) begin
-          `uvm_error(get_full_name(), $sformatf(
-                     "Cannot find request matching d_source 0x%0x", cfg.vif.host_cb.d2h.d_source))
+          `uvm_error(
+              get_full_name(), $sformatf("Cannot find request matching d_source 0x%0x",
+                                         cfg.vif.host_cb.d2h.d_source)
+          )
         end
       end
       cfg.vif.host_cb.h2d.d_ready <= 1'b0;
@@ -141,13 +145,13 @@ class tl_host_driver extends tl_base_driver;
 
   function void invalidate_a_channel();
     cfg.vif.host_cb.h2d.a_opcode <= tlul_pkg::tl_a_op_e'('x);
-    cfg.vif.host_cb.h2d.a_param <= '{default:'x};
-    cfg.vif.host_cb.h2d.a_size <= '{default:'x};
-    cfg.vif.host_cb.h2d.a_source <= '{default:'x};
-    cfg.vif.host_cb.h2d.a_address <= '{default:'x};
-    cfg.vif.host_cb.h2d.a_mask <= '{default:'x};
-    cfg.vif.host_cb.h2d.a_data <= '{default:'x};
-    cfg.vif.host_cb.h2d.a_user <= '{default:'x};
+    cfg.vif.host_cb.h2d.a_param <= '{default: 'x};
+    cfg.vif.host_cb.h2d.a_size <= '{default: 'x};
+    cfg.vif.host_cb.h2d.a_source <= '{default: 'x};
+    cfg.vif.host_cb.h2d.a_address <= '{default: 'x};
+    cfg.vif.host_cb.h2d.a_mask <= '{default: 'x};
+    cfg.vif.host_cb.h2d.a_data <= '{default: 'x};
+    cfg.vif.host_cb.h2d.a_user <= '{default: 'x};
     cfg.vif.host_cb.h2d.a_valid <= 1'b0;
   endfunction : invalidate_a_channel
 

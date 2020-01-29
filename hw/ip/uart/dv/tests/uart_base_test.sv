@@ -7,8 +7,8 @@ class uart_base_test extends cip_base_test #(.ENV_T(uart_env), .CFG_T(uart_env_c
   `uvm_component_new
 
   virtual function void build_phase(uvm_phase phase);
-    max_quit_count  = 50;
-    test_timeout_ns = 600_000_000; // 600ms
+    max_quit_count = 50;
+    test_timeout_ns = 600_000_000;  // 600ms
     super.build_phase(phase);
   endfunction : build_phase
 

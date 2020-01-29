@@ -14,7 +14,7 @@ package irq_agent_pkg;
   `include "uvm_macros.svh"
   `include "irq_seq_item.sv"
 
-  typedef uvm_sequencer#(irq_seq_item) irq_master_sequencer;
+  typedef uvm_sequencer #(irq_seq_item) irq_master_sequencer;
 
   `include "irq_monitor.sv"
   `include "irq_master_driver.sv"

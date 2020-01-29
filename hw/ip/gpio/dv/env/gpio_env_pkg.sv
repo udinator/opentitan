@@ -20,7 +20,7 @@ package gpio_env_pkg;
   // csr and mem total size for IP
   parameter uint GPIO_ADDR_MAP_SIZE = 64;
   // no. of gpio pins
-  parameter uint NUM_GPIOS     = 32;
+  parameter uint NUM_GPIOS = 32;
   // no. of cycles for noise filter
   parameter uint FILTER_CYCLES = 16;
 

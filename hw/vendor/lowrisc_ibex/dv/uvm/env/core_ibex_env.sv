@@ -7,24 +7,22 @@
 // ---------------------------------------------
 class core_ibex_env extends uvm_env;
 
-  ibex_mem_intf_slave_agent   data_if_slave_agent;
-  ibex_mem_intf_slave_agent   instr_if_slave_agent;
-  irq_master_agent            irq_agent;
-  core_ibex_vseqr             vseqr;
-  core_ibex_env_cfg           cfg;
+  ibex_mem_intf_slave_agent data_if_slave_agent;
+  ibex_mem_intf_slave_agent instr_if_slave_agent;
+  irq_master_agent irq_agent;
+  core_ibex_vseqr vseqr;
+  core_ibex_env_cfg cfg;
 
   `uvm_component_utils(core_ibex_env)
   `uvm_component_new
 
   function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    if (!uvm_config_db#(core_ibex_env_cfg)::get(this, "", "cfg", cfg)) begin
+    if (!uvm_config_db #(core_ibex_env_cfg)::get(this, "", "cfg", cfg)) begin
       `uvm_fatal(get_full_name(), "Cannot get cfg")
     end
-    data_if_slave_agent = ibex_mem_intf_slave_agent::type_id::
-                          create("data_if_slave_agent", this);
-    instr_if_slave_agent = ibex_mem_intf_slave_agent::type_id::
-                           create("instr_if_slave_agent", this);
+    data_if_slave_agent = ibex_mem_intf_slave_agent::type_id::create("data_if_slave_agent", this);
+    instr_if_slave_agent = ibex_mem_intf_slave_agent::type_id::create("instr_if_slave_agent", this);
     irq_agent = irq_master_agent::type_id::create("irq_agent", this);
     // Create virtual sequencer
     vseqr = core_ibex_vseqr::type_id::create("vseqr", this);

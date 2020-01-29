@@ -3,11 +3,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 class i2c_base_vseq extends cip_base_vseq #(
-    .CFG_T               (i2c_env_cfg),
-    .RAL_T               (i2c_reg_block),
-    .COV_T               (i2c_env_cov),
-    .VIRTUAL_SEQUENCER_T (i2c_virtual_sequencer)
-  );
+    .CFG_T(i2c_env_cfg),
+    .RAL_T(i2c_reg_block),
+    .COV_T(i2c_env_cov),
+    .VIRTUAL_SEQUENCER_T(i2c_virtual_sequencer)
+);
   `uvm_object_utils(i2c_base_vseq)
 
   // enable interrupts
@@ -17,10 +17,10 @@ class i2c_base_vseq extends cip_base_vseq #(
   rand uint dly_to_access_fifo;
 
   // various knobs to enable certain routines
-  bit do_interrupt      = 1'b1;
+  bit do_interrupt = 1'b1;
 
   constraint dly_to_access_fifo_c {
-    dly_to_access_fifo inside {[1:100]};
+    dly_to_access_fifo inside {[1 : 100]};
   }
 
   `uvm_object_new

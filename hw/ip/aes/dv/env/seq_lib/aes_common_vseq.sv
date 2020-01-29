@@ -6,7 +6,7 @@ class aes_common_vseq extends aes_base_vseq;
   `uvm_object_utils(aes_common_vseq)
 
   constraint num_trans_c {
-    num_trans inside {[1:2]};
+    num_trans inside {[1 : 2]};
   }
   `uvm_object_new
 
@@ -15,9 +15,9 @@ class aes_common_vseq extends aes_base_vseq;
   endtask : body
 
   // function to add csr exclusions of the given type using the csr_excl_item item
-  virtual function void add_csr_exclusions(string           csr_test_type,
-                                           csr_excl_item    csr_excl,
-                                           string           scope = "ral");
+  virtual function void add_csr_exclusions(
+      string csr_test_type, csr_excl_item csr_excl, string scope = "ral"
+  );
 
     // write exclusions - these should not apply to hw_reset test
     if (csr_test_type != "hw_reset") begin

@@ -2,11 +2,9 @@
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
-class spi_monitor extends dv_base_monitor#(
-    .ITEM_T (spi_item),
-    .CFG_T  (spi_agent_cfg),
-    .COV_T  (spi_agent_cov)
-  );
+class spi_monitor extends dv_base_monitor #(
+    .ITEM_T(spi_item), .CFG_T(spi_agent_cfg), .COV_T(spi_agent_cov)
+);
   `uvm_component_utils(spi_monitor)
 
   spi_item host_item;
@@ -30,7 +28,7 @@ class spi_monitor extends dv_base_monitor#(
 
   // collect transactions forever
   virtual protected task collect_trans(uvm_phase phase);
-    host_item   = spi_item::type_id::create("host_item", this);
+    host_item = spi_item::type_id::create("host_item", this);
     device_item = spi_item::type_id::create("device_item", this);
 
     forever begin
@@ -46,15 +44,15 @@ class spi_monitor extends dv_base_monitor#(
     cfg.wait_sck_edge(LeadingEdge);
 
     fork
-      begin: isolation_thread
+      begin : isolation_thread
         fork
-          begin: csb_deassert_thread
+          begin : csb_deassert_thread
             wait(cfg.vif.csb == 1'b1);
           end
-          forever begin: sample_thread
-            logic [7:0] host_byte;    // from mosi
+          forever begin : sample_thread
+            logic [7:0] host_byte;  // from mosi
             logic [7:0] device_byte;  // from miso
-            int         which_bit;
+            int which_bit;
             for (int i = 0; i < 8; i++) begin
               // wait for the sampling edge
               cfg.wait_sck_edge(SamplingEdge);
@@ -80,15 +78,18 @@ class spi_monitor extends dv_base_monitor#(
             device_item.data.push_back(device_byte);
 
             // sending transactions when collect a word data
-            if (host_item.data.size == cfg.num_bytes_per_trans_in_mon &&
-                device_item.data.size == cfg.num_bytes_per_trans_in_mon) begin
-              `uvm_info(`gfn, $sformatf("spi_monitor: host packet:\n%0s", host_item.sprint()),
-                        UVM_HIGH)
-              `uvm_info(`gfn, $sformatf("spi_monitor: device packet:\n%0s", device_item.sprint()),
-                        UVM_HIGH)
+            if (host_item.data.size == cfg.num_bytes_per_trans_in_mon && device_item.data.size ==
+                cfg.num_bytes_per_trans_in_mon) begin
+              `uvm_info(
+                  `gfn, $sformatf("spi_monitor: host packet:\n%0s", host_item.sprint()), UVM_HIGH
+              )
+              `uvm_info(
+                  `gfn, $sformatf("spi_monitor: device packet:\n%0s", device_item.sprint()),
+                      UVM_HIGH
+              )
               host_analysis_port.write(host_item);
               device_analysis_port.write(device_item);
-              host_item   = spi_item::type_id::create("host_item", this);
+              host_item = spi_item::type_id::create("host_item", this);
               device_item = spi_item::type_id::create("device_item", this);
             end
           end

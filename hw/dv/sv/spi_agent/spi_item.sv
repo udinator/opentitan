@@ -9,7 +9,7 @@ class spi_item extends uvm_sequence_item;
 
   // constrain size of data sent / received to be at most 64kB
   constraint data_size_c {
-    data.size() inside {[1:65536]};
+    data.size() inside {[1 : 65536]};
   }
 
   `uvm_object_utils_begin(spi_item)

@@ -2,10 +2,7 @@
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
-class aes_base_test extends cip_base_test #(
-    .ENV_T(aes_env),
-    .CFG_T(aes_env_cfg)
-  );
+class aes_base_test extends cip_base_test #(.ENV_T(aes_env), .CFG_T(aes_env_cfg));
   `uvm_component_utils(aes_base_test)
   `uvm_component_new
 
@@ -16,7 +13,7 @@ class aes_base_test extends cip_base_test #(
   // the base class also looks up UVM_TEST_SEQ plusarg to create and run that seq in
   // the run_phase; as such, nothing more needs to be done
 
-//    function configure_knobs()
-//      endfunction // configure_knobs
+  //    function configure_knobs()
+  //      endfunction // configure_knobs
 
 endclass : aes_base_test

@@ -11,20 +11,22 @@ package test_vectors_pkg;
   `include "uvm_macros.svh"
 
   // declare string and vectors
-  string header           = "test vector pkg";
-  string sha_file_list[]  = {"SHA256ShortMsg.rsp", "SHA256LongMsg.rsp"};
+      string header = "test vector pkg";
+  string sha_file_list[] = {"SHA256ShortMsg.rsp", "SHA256LongMsg.rsp"};
   string hmac_file_list[] = {"HMAC_RFC4868.rsp"};
   string test_vectors_dir;
 
   typedef struct {
-    int        msg_length_byte;
-    bit [7:0]  msg[];
+    int msg_length_byte;
+    bit [7:0] msg[];
     bit [31:0] keys[8];
     bit [31:0] exp_digest[8];
   } test_vectors_t;
 
   // convert a data of string to an array of bytes
-  function automatic void str_to_bytes(string str, output bit [7:0] bytes[]);
+  function automatic void str_to_bytes(
+      string str, output bit [7:0] bytes[]
+  );
     int array_size = str.len() / 2;
     `uvm_info(header, $sformatf("str_to_bytes: string = %s, len = %0d", str, array_size), UVM_HIGH)
     bytes = new[array_size];
@@ -36,7 +38,9 @@ package test_vectors_pkg;
 
   // this funciton gets vector path from plusargs, next function open the file with path provided
   // separate to two functions for the user flexbility to hard-code path or use plusargs
-  function automatic void get_test_vectors_path(input string file_name, output string path);
+  function automatic void get_test_vectors_path(
+      input string file_name, output string path
+  );
     if (test_vectors_dir == "") begin
       if (!$value$plusargs("test_vectors_dir=%s", test_vectors_dir)) begin
         `uvm_fatal(header, "Cannot find $plusarg for the test_vectors_dir.")
@@ -56,11 +60,12 @@ package test_vectors_pkg;
 
   // parse sha/hmac msg, key (if hmac_en), msg length, and exp_digest from a test vectors file
   // support test vectors files with a nist vector format
-  function automatic void parse_sha_hmac(bit hmac_en, int index,
-                                         ref test_vectors_t parsed_vectors[]);
-    int        fd;
-    bit [7:0]  bytes[];
-    string     name, str_data, test_vectors_path;
+  function automatic void parse_sha_hmac(
+      bit hmac_en, int index, ref test_vectors_t parsed_vectors[]
+  );
+    int fd;
+    bit [7:0] bytes[];
+    string name, str_data, test_vectors_path;
 
     if (hmac_en) get_test_vectors_path(hmac_file_list[index], test_vectors_path);
     else get_test_vectors_path(sha_file_list[index], test_vectors_path);

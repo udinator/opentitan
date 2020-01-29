@@ -3,11 +3,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 class rv_dm_env extends dv_base_env #(
-    .CFG_T              (rv_dm_env_cfg),
-    .COV_T              (rv_dm_env_cov),
+    .CFG_T(rv_dm_env_cfg),
+    .COV_T(rv_dm_env_cov),
     .VIRTUAL_SEQUENCER_T(rv_dm_virtual_sequencer),
-    .SCOREBOARD_T       (rv_dm_scoreboard)
-  );
+    .SCOREBOARD_T(rv_dm_scoreboard)
+);
   `uvm_component_utils(rv_dm_env)
 
   jtag_agent m_jtag_agent;
@@ -39,21 +39,20 @@ class rv_dm_env extends dv_base_env #(
     end
 
     // get vifs
-    if (!uvm_config_db#(virtual rv_dm_if)::get(this, "", "rv_dm_vif", cfg.rv_dm_vif)) begin
+    if (!uvm_config_db #(virtual rv_dm_if)::get(this, "", "rv_dm_vif", cfg.rv_dm_vif)) begin
       `uvm_fatal(get_full_name(), "failed to get rv_dm_vif from uvm_config_db")
     end
 
     // create components
     m_jtag_agent = jtag_agent::type_id::create("m_jtag_agent", this);
-    uvm_config_db#(jtag_agent_cfg)::set(this, "m_jtag_agent*", "cfg", cfg.m_jtag_agent_cfg);
+    uvm_config_db #(jtag_agent_cfg)::set(this, "m_jtag_agent*", "cfg", cfg.m_jtag_agent_cfg);
 
     m_tl_host_agent = tl_agent::type_id::create("m_tl_host_agent", this);
-    uvm_config_db#(tl_agent_cfg)::set(this, "m_tl_host_agent*", "cfg",
-                                      cfg.m_tl_host_agent_cfg);
+    uvm_config_db #(tl_agent_cfg)::set(this, "m_tl_host_agent*", "cfg", cfg.m_tl_host_agent_cfg);
 
     m_tl_device_agent = tl_agent::type_id::create("m_tl_device_agent", this);
-    uvm_config_db#(tl_agent_cfg)::set(this, "m_tl_device_agent*", "cfg",
-                                      cfg.m_tl_device_agent_cfg);
+    uvm_config_db #(tl_agent_cfg)::set(this, "m_tl_device_agent*", "cfg", cfg.m_tl_device_agent_cfg)
+        ;
   endfunction
 
   function void connect_phase(uvm_phase phase);

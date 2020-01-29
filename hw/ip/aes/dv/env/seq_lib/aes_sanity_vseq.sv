@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 // basic sanity test vseq
-  class aes_sanity_vseq extends aes_base_vseq;
+class aes_sanity_vseq extends aes_base_vseq;
   `uvm_object_utils(aes_sanity_vseq)
 
   `uvm_object_new

@@ -8,29 +8,29 @@
 // 0x01 -- monitor packets
 // 0x08 -- bit level
 
-module spidpi
-  #(
-  parameter string NAME = "spi0",
-  parameter MODE = 0,
-  parameter LOG_LEVEL = 9
-  )(
-  input  logic clk_i,
-  input  logic rst_ni,
-  output logic spi_device_sck_o,
-  output logic spi_device_csb_o,
-  output logic spi_device_mosi_o,
-  input  logic spi_device_miso_i,
-  input  logic spi_device_miso_en_i
+module spidpi #(
+    parameter string NAME = "spi0", parameter MODE = 0, parameter LOG_LEVEL = 9
+) (
+    input logic clk_i,
+    input logic rst_ni,
+    output logic spi_device_sck_o,
+    output logic spi_device_csb_o,
+    output logic spi_device_mosi_o,
+    input logic spi_device_miso_i,
+    input logic spi_device_miso_en_i
 
 );
-  import "DPI-C" function
-    chandle spidpi_create(input string name, input int mode, input int loglevel);
+  import "DPI-C" function chandle spidpi_create(
+      input string name, input int mode, input int loglevel
+  );
 
-  import "DPI-C" function
-    void spidpi_close(input chandle ctx);
+  import "DPI-C" function void spidpi_close(
+      input chandle ctx
+  );
 
-  import "DPI-C" function
-    byte spidpi_tick(input chandle ctx_void, input [1:0] d2p_data);
+  import "DPI-C" function byte spidpi_tick(
+      input chandle ctx_void, input [1:0] d2p_data
+  );
 
   chandle ctx;
 
@@ -42,11 +42,11 @@ module spidpi
     spidpi_close(ctx);
   end
 
-  logic       unused_rst = rst_ni;
+  logic unused_rst = rst_ni;
   logic [1:0] d2p;
-  logic       unused_dummy;
+  logic unused_dummy;
 
-  assign d2p = { spi_device_miso_i, spi_device_miso_en_i};
+  assign d2p = {spi_device_miso_i, spi_device_miso_en_i};
   always_ff @(posedge clk_i) begin
     automatic byte p2d = spidpi_tick(ctx, d2p);
     spi_device_sck_o <= p2d[0];

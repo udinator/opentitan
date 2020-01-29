@@ -7,13 +7,14 @@ class spi_device_common_vseq extends spi_device_base_vseq;
   `uvm_object_new
 
   constraint num_trans_c {
-    num_trans inside {[1:3]};
+    num_trans inside {[1 : 3]};
   }
 
   virtual task pre_start();
     super.pre_start();
     // keep sck on - needed for csr tests since some csrs are flopped on sck
-    cfg.m_spi_agent_cfg.sck_on = 1'b1;;
+    cfg.m_spi_agent_cfg.sck_on = 1'b1;
+    ;
   endtask
 
   virtual task body();
@@ -21,9 +22,9 @@ class spi_device_common_vseq extends spi_device_base_vseq;
   endtask : body
 
   // function to add csr exclusions of the given type using the csr_excl_item item
-  virtual function void add_csr_exclusions(string           csr_test_type,
-                                           csr_excl_item    csr_excl,
-                                           string           scope = "ral");
+  virtual function void add_csr_exclusions(
+      string csr_test_type, csr_excl_item csr_excl, string scope = "ral"
+  );
     // write exclusions - these should not apply to hw_reset test
     if (csr_test_type != "hw_reset") begin
       // status reads back unexpected values due to writes to other csrs

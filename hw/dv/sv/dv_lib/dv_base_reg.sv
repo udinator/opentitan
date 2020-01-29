@@ -5,9 +5,7 @@
 // base register class which will be used to generate the reg
 class dv_base_reg extends uvm_reg;
 
-  function new(string       name = "",
-               int unsigned n_bits,
-               int          has_coverage);
+  function new(string name = "", int unsigned n_bits, int has_coverage);
     super.new(name, n_bits, has_coverage);
   endfunction : new
 

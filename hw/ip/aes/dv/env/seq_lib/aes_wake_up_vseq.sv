@@ -9,13 +9,13 @@ class aes_wake_up_vseq extends aes_base_vseq;
 
   `uvm_object_new
 
-  bit [31:0]  plain_text[$]   = {32'hDEADBEEF, 32'hEEDDBBAA, 32'hBAADBEEF, 32'hDEAFBEAD};
-  logic [255:0] init_key      = 256'h0000111122223333444455556666777788889999AAAABBBBCCCCDDDDEEEEFFFF;
-  bit [31:0]    cypher_text[$];
-  bit [31:0]    decrypted_text[$];
-  logic [31:0]  read_text[$];
+  bit [31:0] plain_text[$] = {32'hDEADBEEF, 32'hEEDDBBAA, 32'hBAADBEEF, 32'hDEAFBEAD};
+  logic [255:0] init_key = 256'h0000111122223333444455556666777788889999AAAABBBBCCCCDDDDEEEEFFFF;
+  bit [31:0] cypher_text[$];
+  bit [31:0] decrypted_text[$];
+  logic [31:0] read_text[$];
 
-  string  str="";
+  string str = "";
 
 
 
@@ -44,8 +44,10 @@ class aes_wake_up_vseq extends aes_base_vseq;
     cfg.clk_rst_vif.wait_clks(20);
     // poll status register
 
-    `uvm_info(`gfn, $sformatf("\n\t ---| Polling for data register %s",
-                              ral.status.convert2string()), UVM_DEBUG)
+    `uvm_info(
+        `gfn, $sformatf("\n\t ---| Polling for data register %s", ral.status.convert2string()),
+            UVM_DEBUG
+    )
 
     read_data(cypher_text);
 
@@ -62,21 +64,26 @@ class aes_wake_up_vseq extends aes_base_vseq;
     `uvm_info(`gfn, $sformatf("\n\t ---| WRITING CYPHER TEXT"), UVM_LOW)
     add_data(cypher_text);
 
-    `uvm_info(`gfn, $sformatf("\n\t ---| Polling for data %s", ral.status.convert2string()),
-              UVM_DEBUG)
+    `uvm_info(
+        `gfn, $sformatf("\n\t ---| Polling for data %s", ral.status.convert2string()), UVM_DEBUG
+    )
 
     cfg.clk_rst_vif.wait_clks(20);
 
     read_data(decrypted_text);
-    foreach(decrypted_text[i]) begin
-      `uvm_info(`gfn, $sformatf("\n\t ----| decrypted text elememt [%d] : %02h", i, decrypted_text[i]), UVM_LOW)
+    foreach (decrypted_text[i]) begin
+      `uvm_info(
+          `gfn, $sformatf("\n\t ----| decrypted text elememt [%d] : %02h", i, decrypted_text[i]),
+              UVM_LOW
+      )
     end
 
-    foreach(plain_text[i]) begin
-      if(plain_text[i] != decrypted_text[i]) begin
-        str = $sformatf(" \n\t ---| OH NOO TEST FAILED AT POS %d|--- \n \t DECRYPTED: \t %02h \n\t Plaintext: \t %02h ",
-                        i, decrypted_text[i], plain_text[i]);
-        `uvm_fatal(`gfn, $sformatf("%s",str));
+    foreach (plain_text[i]) begin
+      if (plain_text[i] != decrypted_text[i]) begin
+        str = $sformatf(
+            " \n\t ---| OH NOO TEST FAILED AT POS %d|--- \n \t DECRYPTED: \t %02h \n\t Plaintext: \t %02h "
+                , i, decrypted_text[i], plain_text[i]);
+        `uvm_fatal(`gfn, $sformatf("%s", str));
       end
 
     end

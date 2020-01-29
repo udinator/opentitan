@@ -12,11 +12,11 @@ interface spi_if (input rst_n);
 
   // debug signals
   logic [7:0] host_byte;
-  int         host_bit;
+  int host_bit;
   logic [7:0] device_byte;
-  int         device_bit;
-  int         sck_pulses;
-  bit         sck_polarity;
-  bit         sck_phase;
+  int device_bit;
+  int sck_pulses;
+  bit sck_polarity;
+  bit sck_phase;
 
 endinterface

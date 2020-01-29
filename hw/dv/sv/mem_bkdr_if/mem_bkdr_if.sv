@@ -16,7 +16,7 @@
 // any parameter set and can be set into the uvm_config_db to allow us to manipulate the mem
 // contents from the testbench without having us to add heirarchy information, making the chip
 // testbench portable.
-interface mem_bkdr_if();
+interface mem_bkdr_if ();
   import uvm_pkg::*;
   import top_pkg::*;
   `include "uvm_macros.svh"
@@ -77,28 +77,28 @@ interface mem_bkdr_if();
         end
         2: begin
           case (addr[0])
-            1'b0:  return mem_data[7:0];
-            1'b1:  return mem_data[15:8];
+            1'b0: return mem_data[7:0];
+            1'b1: return mem_data[15:8];
           endcase
         end
         4: begin
           case (addr[1:0])
-            2'b00:  return mem_data[7:0];
-            2'b01:  return mem_data[15:8];
-            2'b10:  return mem_data[23:16];
-            2'b11:  return mem_data[31:24];
+            2'b00: return mem_data[7:0];
+            2'b01: return mem_data[15:8];
+            2'b10: return mem_data[23:16];
+            2'b11: return mem_data[31:24];
           endcase
         end
         8: begin
           case (addr[2:0])
-            3'b000:  return mem_data[7:0];
-            3'b001:  return mem_data[15:8];
-            3'b010:  return mem_data[23:16];
-            3'b011:  return mem_data[31:24];
-            3'b100:  return mem_data[39:32];
-            3'b101:  return mem_data[47:40];
-            3'b110:  return mem_data[55:48];
-            3'b111:  return mem_data[63:56];
+            3'b000: return mem_data[7:0];
+            3'b001: return mem_data[15:8];
+            3'b010: return mem_data[23:16];
+            3'b011: return mem_data[31:24];
+            3'b100: return mem_data[39:32];
+            3'b101: return mem_data[47:40];
+            3'b110: return mem_data[55:48];
+            3'b111: return mem_data[63:56];
           endcase
         end
       endcase
@@ -120,16 +120,16 @@ interface mem_bkdr_if();
         end
         4: begin
           case (addr[1])
-            1'b0:  return mem_data[15:0];
-            1'b1:  return mem_data[31:16];
+            1'b0: return mem_data[15:0];
+            1'b1: return mem_data[31:16];
           endcase
         end
         8: begin
           case (addr[2:1])
-            2'b00:  return mem_data[15:0];
-            2'b01:  return mem_data[31:16];
-            2'b10:  return mem_data[47:32];
-            2'b11:  return mem_data[63:48];
+            2'b00: return mem_data[15:0];
+            2'b01: return mem_data[31:16];
+            2'b10: return mem_data[47:32];
+            2'b11: return mem_data[63:48];
           endcase
         end
       endcase
@@ -154,8 +154,8 @@ interface mem_bkdr_if();
         end
         8: begin
           case (addr[2])
-            1'b0:  return mem_data[31:0];
-            1'b1:  return mem_data[63:32];
+            1'b0: return mem_data[31:0];
+            1'b1: return mem_data[63:32];
           endcase
         end
       endcase
@@ -178,16 +178,16 @@ interface mem_bkdr_if();
         end
         2: begin
           case (addr[0])
-            1'b0:  rw_data[7:0] = data;
-            1'b1:  rw_data[15:8] = data;
+            1'b0: rw_data[7:0] = data;
+            1'b1: rw_data[15:8] = data;
           endcase
         end
         4: begin
           case (addr[1:0])
-            2'b00:  rw_data[7:0] = data;
-            2'b01:  rw_data[15:8] = data;
-            2'b10:  rw_data[23:16] = data;
-            2'b11:  rw_data[31:24] = data;
+            2'b00: rw_data[7:0] = data;
+            2'b01: rw_data[15:8] = data;
+            2'b10: rw_data[23:16] = data;
+            2'b11: rw_data[31:24] = data;
           endcase
         end
         8: begin
@@ -228,10 +228,10 @@ interface mem_bkdr_if();
         end
         8: begin
           case (addr[2:1])
-            2'b00:  rw_data[15:0] = data;
-            2'b01:  rw_data[32:16] = data;
-            2'b10:  rw_data[47:32] = data;
-            2'b11:  rw_data[63:48] = data;
+            2'b00: rw_data[15:0] = data;
+            2'b01: rw_data[32:16] = data;
+            2'b10: rw_data[47:32] = data;
+            2'b11: rw_data[63:48] = data;
           endcase
         end
       endcase
@@ -259,8 +259,8 @@ interface mem_bkdr_if();
         end
         8: begin
           case (addr[2])
-            1'b0:  rw_data[31:0] = data;
-            1'b1:  rw_data[63:32] = data;
+            1'b0: rw_data[31:0] = data;
+            1'b1: rw_data[63:32] = data;
           endcase
         end
       endcase
@@ -276,13 +276,12 @@ interface mem_bkdr_if();
 
   // check if input file is read/writable
   function automatic void check_file(string file, bit wr);
-    string mode = wr ? "w": "r";
+    string mode = wr ? "w" : "r";
     int fh = $fopen(file, mode);
     init();
     if (!fh) begin
       `uvm_fatal(path, $sformatf("file %0s could not be opened for %0s mode", file, mode))
-    end
-    else begin
+    end else begin
       $fclose(fh);
     end
   endfunction
@@ -315,13 +314,13 @@ interface mem_bkdr_if();
   function automatic void clear_mem();
     init();
     `uvm_info(path, "Clear memory", UVM_LOW)
-    `mem_array_path_slice = '{default:'0};
-  endfunction // clr_mem
+    `mem_array_path_slice = '{default: '0};
+  endfunction  // clr_mem
 
   function automatic void set_mem();
     init();
     `uvm_info(path, "Set memory", UVM_LOW)
-    `mem_array_path_slice = '{default:'1};
+    `mem_array_path_slice = '{default: '1};
   endfunction
 
   // randomize the memory

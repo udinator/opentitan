@@ -26,11 +26,11 @@ class spi_device_txrx_vseq extends spi_device_base_vseq;
 
   // semaphores to avoid updating fifo ptr when over/underflow is happening. Issue #103
   semaphore tx_ptr_sema, rx_ptr_sema;
-  bit       allow_underflow_overflow;
+  bit allow_underflow_overflow;
 
   constraint tx_total_bytes_c {
     tx_total_bytes inside {[SRAM_SIZE : 10 * SRAM_SIZE]};
-    tx_total_bytes[1:0] == 0; // word aligned
+    tx_total_bytes[1:0] == 0;  // word aligned
   }
 
   constraint rx_total_bytes_c {
@@ -39,24 +39,24 @@ class spi_device_txrx_vseq extends spi_device_base_vseq;
 
   constraint tx_delay_c {
     tx_delay dist {
-      0              :/ 1,
-      [1   : 100]    :/ 3,
+      0 :/ 1,
+      [1 : 100] :/ 3,
       [101 : 10_000] :/ 1
     };
   }
 
   constraint rx_delay_c {
     rx_delay dist {
-      0              :/ 1,
-      [1   : 100]    :/ 3,
+      0 :/ 1,
+      [1 : 100] :/ 3,
       [101 : 10_000] :/ 1
     };
   }
 
   constraint spi_delay_c {
     spi_delay dist {
-      0              :/ 1,
-      [1   : 100]    :/ 3,
+      0 :/ 1,
+      [1 : 100] :/ 3,
       [101 : 10_000] :/ 1
     };
   }
@@ -68,28 +68,29 @@ class spi_device_txrx_vseq extends spi_device_base_vseq;
   // lower 2 bits are ignored, use word granularity to contrain the sram setting
   constraint sram_constraints_c {
     // if limit is 0, it means 1 word
-    sram_host_limit_addr[31:2]   < (SRAM_SIZE/SRAM_WORD_SIZE);
-    sram_device_limit_addr[31:2] < (SRAM_SIZE/SRAM_WORD_SIZE);
+    sram_host_limit_addr[31:2] < (SRAM_SIZE / SRAM_WORD_SIZE);
+    sram_device_limit_addr[31:2] < (SRAM_SIZE / SRAM_WORD_SIZE);
 
-    sram_host_base_addr   <= sram_host_limit_addr;
+    sram_host_base_addr <= sram_host_limit_addr;
     sram_device_base_addr <= sram_device_limit_addr;
     // host and device addr space within sram should not overlap
-    if (sram_host_limit_addr < sram_device_base_addr) {
+    if (sram_host_limit_addr < sram_device_base_addr){
       sram_host_limit_addr[31:2] < sram_device_base_addr[31:2];
       sram_device_limit_addr < SRAM_SIZE;
-    } else {
+    }
+        else {
       sram_device_limit_addr[31:2] < sram_host_base_addr[31:2];
       sram_host_limit_addr < SRAM_SIZE;
     }
-    host_sram_word_size   == sram_host_limit_addr[31:2] - sram_host_base_addr[31:2] + 1;
+    host_sram_word_size == sram_host_limit_addr[31:2] - sram_host_base_addr[31:2] + 1;
     device_sram_word_size == sram_device_limit_addr[31:2] - sram_device_base_addr[31:2] + 1;
   }
 
   // size from 25 to SRAM_SIZE/SRAM_WORD_SIZE-25
   // override it if test extreme cases
   constraint sram_size_constraints_c {
-    host_sram_word_size   inside {[25:SRAM_SIZE/SRAM_WORD_SIZE]};
-    device_sram_word_size inside {[25:SRAM_SIZE/SRAM_WORD_SIZE]};
+    host_sram_word_size inside {[25 : SRAM_SIZE / SRAM_WORD_SIZE]};
+    device_sram_word_size inside {[25 : SRAM_SIZE / SRAM_WORD_SIZE]};
     host_sram_word_size == device_sram_word_size dist {
       1 :/ 2,
       0 :/ 1
@@ -118,7 +119,7 @@ class spi_device_txrx_vseq extends spi_device_base_vseq;
         end
       join
       check_for_tx_rx_idle();
-    end // for
+    end  // for
   endtask : body
 
   virtual task process_tx_write();
@@ -131,19 +132,24 @@ class spi_device_txrx_vseq extends spi_device_base_vseq;
       cfg.clk_rst_vif.wait_clks(tx_delay);
 
       wait_for_tx_avail_bytes(SRAM_WORD_SIZE, SramSpaceAvail, sram_avail_bytes);
-      `DV_CHECK_STD_RANDOMIZE_WITH_FATAL(tx_write_bytes,
-                                         tx_write_bytes <= sram_avail_bytes;
+      `DV_CHECK_STD_RANDOMIZE_WITH_FATAL(
+          tx_write_bytes,
+              tx_write_bytes <= sram_avail_bytes;
                                          tx_write_bytes <= remaining_bytes;
                                          tx_write_bytes[1:0] == 0;
                                          tx_write_bytes dist {
                                              [1:SRAM_WORD_SIZE]    :/ 1,
                                              [SRAM_WORD_SIZE+1:20] :/ 3,
                                              [21:SRAM_SIZE-1]      :/ 1,
-                                             SRAM_SIZE             :/ 1};)
+                                             SRAM_SIZE             :/ 1};
+      )
       repeat (tx_write_bytes / SRAM_WORD_SIZE) device_words_q.push_back($urandom);
-      `uvm_info(`gfn, $sformatf("tx_write_bytes = %0d, sram_avail_bytes = %0d,\
-                                remaining_bytes = %0d",
-                                tx_write_bytes, sram_avail_bytes, remaining_bytes), UVM_MEDIUM)
+      `uvm_info(
+          `gfn, $sformatf(
+              "tx_write_bytes = %0d, sram_avail_bytes = %0d,\
+                                remaining_bytes = %0d"
+                  , tx_write_bytes, sram_avail_bytes, remaining_bytes), UVM_MEDIUM
+      )
 
       // make sure ptr isn't being updated while fifo underflow is happening
       if (allow_underflow_overflow) tx_ptr_sema.get();
@@ -161,7 +167,7 @@ class spi_device_txrx_vseq extends spi_device_base_vseq;
   endtask : process_tx_write
 
   virtual task process_rx_read();
-    int  remaining_bytes = rx_total_bytes;
+    int remaining_bytes = rx_total_bytes;
     uint sram_avail_bytes;
     uint rx_read_bytes;
     while (remaining_bytes > 0) begin
@@ -170,17 +176,21 @@ class spi_device_txrx_vseq extends spi_device_base_vseq;
       cfg.clk_rst_vif.wait_clks(rx_delay);
 
       wait_for_rx_avail_bytes(SRAM_WORD_SIZE, SramDataAvail, sram_avail_bytes);
-      `DV_CHECK_STD_RANDOMIZE_WITH_FATAL(rx_read_bytes,
-                                         rx_read_bytes <= sram_avail_bytes;
+      `DV_CHECK_STD_RANDOMIZE_WITH_FATAL(
+          rx_read_bytes,
+              rx_read_bytes <= sram_avail_bytes;
                                          rx_read_bytes <= remaining_bytes;
                                          rx_read_bytes[1:0] == 0;
                                          rx_read_bytes dist {
                                              [1:SRAM_WORD_SIZE]    :/ 1,
                                              [SRAM_WORD_SIZE+1:20] :/ 3,
                                              [21:SRAM_SIZE-1]      :/ 1,
-                                             SRAM_SIZE             :/ 1};)
-      `uvm_info(`gfn, $sformatf("rx_read_bytes = %0d, sram_avail_bytes = %0d, remaining_bytes =%0d",
-                                rx_read_bytes, sram_avail_bytes, remaining_bytes), UVM_MEDIUM)
+                                             SRAM_SIZE             :/ 1};
+      )
+      `uvm_info(
+          `gfn, $sformatf("rx_read_bytes = %0d, sram_avail_bytes = %0d, remaining_bytes =%0d",
+                          rx_read_bytes, sram_avail_bytes, remaining_bytes), UVM_MEDIUM
+      )
 
       // make sure ptr isn't being updated while fifo overflow is happening
       if (allow_underflow_overflow) rx_ptr_sema.get();
@@ -195,7 +205,7 @@ class spi_device_txrx_vseq extends spi_device_base_vseq;
   virtual task process_spi_xfer();
     uint sram_avail_bytes;
     uint spi_bytes;
-    bit  is_under_over_flow = 0;
+    bit is_under_over_flow = 0;
     logic [7:0] device_bytes_q[$];
 
     `DV_CHECK_MEMBER_RANDOMIZE_FATAL(spi_delay)
@@ -208,14 +218,16 @@ class spi_device_txrx_vseq extends spi_device_base_vseq;
       return;
     end
 
-    `DV_CHECK_STD_RANDOMIZE_WITH_FATAL(spi_bytes,
-                                       spi_bytes <= sram_avail_bytes;
+    `DV_CHECK_STD_RANDOMIZE_WITH_FATAL(
+        spi_bytes,
+            spi_bytes <= sram_avail_bytes;
                                        spi_bytes[1:0] == 0;
                                        spi_bytes dist {
                                            [1:SRAM_WORD_SIZE]    :/ 1,
                                            [SRAM_WORD_SIZE+1:20] :/ 3,
                                            [21:SRAM_SIZE-1]      :/ 1,
-                                           SRAM_SIZE             :/ 1};)
+                                           SRAM_SIZE             :/ 1};
+    )
 
     // avoid ptr is updated while fifo under/overflow is happening
     if (is_under_over_flow) begin

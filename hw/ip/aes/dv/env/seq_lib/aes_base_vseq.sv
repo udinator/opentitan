@@ -4,10 +4,10 @@
 
 
 class aes_base_vseq extends cip_base_vseq #(
-  .CFG_T               (aes_env_cfg),
-  .RAL_T               (aes_reg_block),
-  .COV_T               (aes_env_cov),
-  .VIRTUAL_SEQUENCER_T (aes_virtual_sequencer)
+    .CFG_T(aes_env_cfg),
+    .RAL_T(aes_reg_block),
+    .COV_T(aes_env_cov),
+    .VIRTUAL_SEQUENCER_T(aes_virtual_sequencer)
 );
 
   `uvm_object_utils(aes_base_vseq)
@@ -17,7 +17,7 @@ class aes_base_vseq extends cip_base_vseq #(
   parameter bit DECRYPT = 1'b1;
 
   aes_reg2hw_t aes_reg;
-  aes_seq_item  aes_item;
+  aes_seq_item aes_item;
 
   // various knobs to enable certain routines
   bit do_aes_init = 1'b1;
@@ -36,15 +36,15 @@ class aes_base_vseq extends cip_base_vseq #(
 
   // setup basic aes features
   virtual task aes_init();
-    bit [31:0] aes_ctrl    = '0;
+    bit [31:0] aes_ctrl = '0;
     bit [31:0] aes_trigger = '0;
 
 
     // initialize control register
-    aes_ctrl[0]   = 0;        // set to encryption
-    aes_ctrl[3:1] = 3'b001;   // set to 128b key
-    aes_ctrl[4]   = 0;        // start encryption automaticaly
-    aes_ctrl[5]   = 0;        // don't overwrite output reg.
+    aes_ctrl[0] = 0;  // set to encryption
+    aes_ctrl[3:1] = 3'b001;  // set to 128b key
+    aes_ctrl[4] = 0;  // start encryption automaticaly
+    aes_ctrl[5] = 0;  // don't overwrite output reg.
     csr_wr(.csr(ral.ctrl), .value(aes_ctrl));
     csr_wr(.csr(ral.trigger), .value(aes_trigger));
   endtask
@@ -74,7 +74,7 @@ class aes_base_vseq extends cip_base_vseq #(
   endtask
 
 
-  virtual task write_key(bit  [7:0][31:0] key);
+  virtual task write_key(bit [7:0][31:0] key);
     csr_wr(.csr(ral.key0), .value(key[0]));
     csr_wr(.csr(ral.key1), .value(key[1]));
     csr_wr(.csr(ral.key2), .value(key[2]));
@@ -87,18 +87,18 @@ class aes_base_vseq extends cip_base_vseq #(
 
 
   virtual task add_data(ref bit [31:0] data[$]);
-    csr_wr(.csr(ral.data_in0), .value(data.pop_back()) );
-    csr_wr(.csr(ral.data_in1), .value(data.pop_back()) );
-    csr_wr(.csr(ral.data_in2), .value(data.pop_back()) );
-    csr_wr(.csr(ral.data_in3), .value(data.pop_back()) );
+    csr_wr(.csr(ral.data_in0), .value(data.pop_back()));
+    csr_wr(.csr(ral.data_in1), .value(data.pop_back()));
+    csr_wr(.csr(ral.data_in2), .value(data.pop_back()));
+    csr_wr(.csr(ral.data_in3), .value(data.pop_back()));
   endtask
 
 
   virtual task read_data(ref bit [31:0] cypher_txt[$]);
-    bit              data_rdy = 0;
-    bit [31:0]       rd_data;
+    bit data_rdy = 0;
+    bit [31:0] rd_data;
     `uvm_info(`gfn, $sformatf("\n\t ----| POLLING FOR DATA"), UVM_DEBUG)
-    csr_spinwait(.ptr(ral.status.output_valid) , .exp_data(1'b1));    // poll for data valid
+    csr_spinwait(.ptr(ral.status.output_valid), .exp_data(1'b1));  // poll for data valid
 
     csr_rd(.ptr(ral.data_out0), .value(rd_data));
     cypher_txt.push_front(rd_data);
@@ -119,7 +119,7 @@ class aes_base_vseq extends cip_base_vseq #(
     aes_item = new();
     aes_item.data_len_max = cfg.data_len_max;
     aes_item.data_len_min = cfg.data_len_min;
-    aes_item.key_mask     = cfg.key_mask;
+    aes_item.key_mask = cfg.key_mask;
   endfunction
 
 endclass : aes_base_vseq

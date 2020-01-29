@@ -81,71 +81,71 @@ int kernel_program_instr_cnt = 400;
 
 // Implemented previlieged CSR list
 parameter privileged_reg_t implemented_csr[] = {
-    // Machine mode mode CSR
-    MVENDORID,        // Vendor ID
-    MARCHID,          // Architecture ID
-    MHARTID,          // Hardware thread ID
-    MSTATUS,          // Machine status
-    MISA,             // ISA and extensions
-    MTVEC,            // Machine trap-handler base address
-    MEPC,             // Machine exception program counter
-    MCAUSE,           // Machine trap cause
-    MTVAL,            // Machine bad address or instruction
-    MIE,              // Machine interrupt enable
-    MIP,              // Machine interrupt pending
-    MCYCLE,           // Machine cycle counter (lower 32 bits)
-    MCYCLEH,          // Machine cycle counter (upper 32 bits)
-    MINSTRET,         // Machine instructions retired counter (lower 32 bits)
-    MINSTRETH,        // Machine instructions retired counter (upper 32 bits)
-    MCOUNTINHIBIT,    // Machine counter inhibit register
-    MHPMEVENT3,       // Machine performance monitoring event selector
-    MHPMEVENT4,       // Machine performance monitoring event selector
-    MHPMEVENT5,       // Machine performance monitoring event selector
-    MHPMEVENT6,       // Machine performance monitoring event selector
-    MHPMEVENT7,       // Machine performance monitoring event selector
-    MHPMEVENT8,       // Machine performance monitoring event selector
-    MHPMEVENT9,       // Machine performance monitoring event selector
-    MHPMEVENT10,      // Machine performance monitoring event selector
-    MHPMCOUNTER3,     // Machine performance monitoring counter (lower 32 bits)
-    MHPMCOUNTER4,     // Machine performance monitoring counter (lower 32 bits)
-    MHPMCOUNTER5,     // Machine performance monitoring counter (lower 32 bits)
-    MHPMCOUNTER6,     // Machine performance monitoring counter (lower 32 bits)
-    MHPMCOUNTER7,     // Machine performance monitoring counter (lower 32 bits)
-    MHPMCOUNTER8,     // Machine performance monitoring counter (lower 32 bits)
-    MHPMCOUNTER9,     // Machine performance monitoring counter (lower 32 bits)
-    MHPMCOUNTER10,    // Machine performance monitoring counter (lower 32 bits)
-    MHPMCOUNTER3H,    // Machine performance monitoring counter (upper 32 bits)
-    MHPMCOUNTER4H,    // Machine performance monitoring counter (upper 32 bits)
-    MHPMCOUNTER5H,    // Machine performance monitoring counter (upper 32 bits)
-    MHPMCOUNTER6H,    // Machine performance monitoring counter (upper 32 bits)
-    MHPMCOUNTER7H,    // Machine performance monitoring counter (upper 32 bits)
-    MHPMCOUNTER8H,    // Machine performance monitoring counter (upper 32 bits)
-    MHPMCOUNTER9H,    // Machine performance monitoring counter (upper 32 bits)
-    MHPMCOUNTER10H,   // Machine performance monitoring counter (upper 32 bits)
-    PMPCFG0,          // PMP configuration register
-    PMPCFG1,          // PMP configuration register
-    PMPCFG2,          // PMP configuration register
-    PMPCFG3,          // PMP configuration register
-    PMPADDR0,         // PMP address register
-    PMPADDR1,         // PMP address register
-    PMPADDR2,         // PMP address register
-    PMPADDR3,         // PMP address register
-    PMPADDR4,         // PMP address register
-    PMPADDR5,         // PMP address register
-    PMPADDR6,         // PMP address register
-    PMPADDR7,         // PMP address register
-    PMPADDR8,         // PMP address register
-    PMPADDR9,         // PMP address register
-    PMPADDR10,        // PMP address register
-    PMPADDR11,        // PMP address register
-    PMPADDR12,        // PMP address register
-    PMPADDR13,        // PMP address register
-    PMPADDR14,        // PMP address register
-    PMPADDR15,        // PMP address register
-    DCSR,             // Debug control and status register
-    DPC,              // Debug PC
-    DSCRATCH0,        // Debug scratch register 0
-    DSCRATCH1         // Debug scratch register 1
+// Machine mode mode CSR
+MVENDORID,  // Vendor ID
+MARCHID,  // Architecture ID
+MHARTID,  // Hardware thread ID
+MSTATUS,  // Machine status
+MISA,  // ISA and extensions
+MTVEC,  // Machine trap-handler base address
+MEPC,  // Machine exception program counter
+MCAUSE,  // Machine trap cause
+MTVAL,  // Machine bad address or instruction
+MIE,  // Machine interrupt enable
+MIP,  // Machine interrupt pending
+MCYCLE,  // Machine cycle counter (lower 32 bits)
+MCYCLEH,  // Machine cycle counter (upper 32 bits)
+MINSTRET,  // Machine instructions retired counter (lower 32 bits)
+MINSTRETH,  // Machine instructions retired counter (upper 32 bits)
+MCOUNTINHIBIT,  // Machine counter inhibit register
+MHPMEVENT3,  // Machine performance monitoring event selector
+MHPMEVENT4,  // Machine performance monitoring event selector
+MHPMEVENT5,  // Machine performance monitoring event selector
+MHPMEVENT6,  // Machine performance monitoring event selector
+MHPMEVENT7,  // Machine performance monitoring event selector
+MHPMEVENT8,  // Machine performance monitoring event selector
+MHPMEVENT9,  // Machine performance monitoring event selector
+MHPMEVENT10,  // Machine performance monitoring event selector
+MHPMCOUNTER3,  // Machine performance monitoring counter (lower 32 bits)
+MHPMCOUNTER4,  // Machine performance monitoring counter (lower 32 bits)
+MHPMCOUNTER5,  // Machine performance monitoring counter (lower 32 bits)
+MHPMCOUNTER6,  // Machine performance monitoring counter (lower 32 bits)
+MHPMCOUNTER7,  // Machine performance monitoring counter (lower 32 bits)
+MHPMCOUNTER8,  // Machine performance monitoring counter (lower 32 bits)
+MHPMCOUNTER9,  // Machine performance monitoring counter (lower 32 bits)
+MHPMCOUNTER10,  // Machine performance monitoring counter (lower 32 bits)
+MHPMCOUNTER3H,  // Machine performance monitoring counter (upper 32 bits)
+MHPMCOUNTER4H,  // Machine performance monitoring counter (upper 32 bits)
+MHPMCOUNTER5H,  // Machine performance monitoring counter (upper 32 bits)
+MHPMCOUNTER6H,  // Machine performance monitoring counter (upper 32 bits)
+MHPMCOUNTER7H,  // Machine performance monitoring counter (upper 32 bits)
+MHPMCOUNTER8H,  // Machine performance monitoring counter (upper 32 bits)
+MHPMCOUNTER9H,  // Machine performance monitoring counter (upper 32 bits)
+MHPMCOUNTER10H,  // Machine performance monitoring counter (upper 32 bits)
+PMPCFG0,  // PMP configuration register
+PMPCFG1,  // PMP configuration register
+PMPCFG2,  // PMP configuration register
+PMPCFG3,  // PMP configuration register
+PMPADDR0,  // PMP address register
+PMPADDR1,  // PMP address register
+PMPADDR2,  // PMP address register
+PMPADDR3,  // PMP address register
+PMPADDR4,  // PMP address register
+PMPADDR5,  // PMP address register
+PMPADDR6,  // PMP address register
+PMPADDR7,  // PMP address register
+PMPADDR8,  // PMP address register
+PMPADDR9,  // PMP address register
+PMPADDR10,  // PMP address register
+PMPADDR11,  // PMP address register
+PMPADDR12,  // PMP address register
+PMPADDR13,  // PMP address register
+PMPADDR14,  // PMP address register
+PMPADDR15,  // PMP address register
+DCSR,  // Debug control and status register
+DPC,  // Debug PC
+DSCRATCH0,  // Debug scratch register 0
+DSCRATCH1  // Debug scratch register 1
 };
 
 // --------------------------------------------------------------------------
@@ -153,16 +153,8 @@ parameter privileged_reg_t implemented_csr[] = {
 // --------------------------------------------------------------------------
 
 parameter interrupt_cause_t implemented_interrupt[] = {
-  M_SOFTWARE_INTR,
-  M_TIMER_INTR,
-  M_EXTERNAL_INTR
-};
+    M_SOFTWARE_INTR, M_TIMER_INTR, M_EXTERNAL_INTR};
 
-parameter exception_cause_t implemented_exception[] = {
-  INSTRUCTION_ACCESS_FAULT,
-  ILLEGAL_INSTRUCTION,
-  BREAKPOINT,
-  LOAD_ACCESS_FAULT,
-  STORE_AMO_ACCESS_FAULT,
-  ECALL_MMODE
-};
+parameter exception_cause_t implemented_exception[]
+    = {INSTRUCTION_ACCESS_FAULT, ILLEGAL_INSTRUCTION, BREAKPOINT, LOAD_ACCESS_FAULT,
+       STORE_AMO_ACCESS_FAULT, ECALL_MMODE};

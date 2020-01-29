@@ -20,7 +20,7 @@ package aes_env_pkg;
 
   // parameters
 
-   parameter uint AES_ADDR_MAP_SIZE      = 128;
+  parameter uint AES_ADDR_MAP_SIZE = 128;
   // types
   // forward declare classes to allow typedefs below
   typedef class aes_env_cfg;
@@ -29,12 +29,12 @@ package aes_env_pkg;
   // functions
 
   // package sources
- `include "aes_env_cfg.sv"
- `include "aes_seq_item.sv"
- `include "aes_env_cov.sv"
- `include "aes_virtual_sequencer.sv"
- `include "aes_scoreboard.sv"
- `include "aes_env.sv"
- `include "aes_vseq_list.sv"
+  `include "aes_env_cfg.sv"
+  `include "aes_seq_item.sv"
+  `include "aes_env_cov.sv"
+  `include "aes_virtual_sequencer.sv"
+  `include "aes_scoreboard.sv"
+  `include "aes_env.sv"
+  `include "aes_vseq_list.sv"
 
 endpackage

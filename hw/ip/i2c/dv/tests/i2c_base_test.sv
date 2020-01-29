@@ -13,8 +13,8 @@ class i2c_base_test extends cip_base_test #(.ENV_T(i2c_env), .CFG_T(i2c_env_cfg)
   // the base class also looks up UVM_TEST_SEQ plusarg to create and run that seq in
   // the run_phase; as such, nothing more needs to be done
   virtual function void build_phase(uvm_phase phase);
-    max_quit_count  = 50;
-    test_timeout_ns = 600_000_000; // 600ms
+    max_quit_count = 50;
+    test_timeout_ns = 600_000_000;  // 600ms
     super.build_phase(phase);
   endfunction : build_phase
 

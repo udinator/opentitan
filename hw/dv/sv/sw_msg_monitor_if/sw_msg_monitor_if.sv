@@ -4,50 +4,50 @@
 
 // shortcuts for use in switching # of args to insert in formatted string
 `define _0_ARGS(a)
-`define _1_ARGS(a)                  , a[0]
-`define _2_ARGS(a)                  `_1_ARGS(a), a[1]
-`define _3_ARGS(a)                  `_2_ARGS(a), a[2]
-`define _4_ARGS(a)                  `_3_ARGS(a), a[3]
-`define _5_ARGS(a)                  `_4_ARGS(a), a[4]
-`define _6_ARGS(a)                  `_5_ARGS(a), a[5]
-`define _7_ARGS(a)                  `_6_ARGS(a), a[6]
-`define _8_ARGS(a)                  `_7_ARGS(a), a[7]
-`define _9_ARGS(a)                  `_8_ARGS(a), a[8]
-`define _10_ARGS(a)                 `_9_ARGS(a), a[9]
-`define _11_ARGS(a)                 `_10_ARGS(a), a[10]
-`define _12_ARGS(a)                 `_11_ARGS(a), a[11]
-`define _13_ARGS(a)                 `_12_ARGS(a), a[12]
-`define _14_ARGS(a)                 `_13_ARGS(a), a[13]
-`define _15_ARGS(a)                 `_14_ARGS(a), a[14]
-`define _16_ARGS(a)                 `_15_ARGS(a), a[15]
-`define _17_ARGS(a)                 `_16_ARGS(a), a[16]
-`define _18_ARGS(a)                 `_17_ARGS(a), a[17]
-`define _19_ARGS(a)                 `_18_ARGS(a), a[18]
-`define _20_ARGS(a)                 `_19_ARGS(a), a[19]
-`define _21_ARGS(a)                 `_20_ARGS(a), a[20]
-`define _22_ARGS(a)                 `_21_ARGS(a), a[21]
-`define _23_ARGS(a)                 `_22_ARGS(a), a[22]
-`define _24_ARGS(a)                 `_23_ARGS(a), a[23]
-`define _25_ARGS(a)                 `_24_ARGS(a), a[24]
-`define _26_ARGS(a)                 `_25_ARGS(a), a[25]
-`define _27_ARGS(a)                 `_26_ARGS(a), a[26]
-`define _28_ARGS(a)                 `_27_ARGS(a), a[27]
-`define _29_ARGS(a)                 `_28_ARGS(a), a[28]
-`define _30_ARGS(a)                 `_29_ARGS(a), a[29]
-`define _31_ARGS(a)                 `_30_ARGS(a), a[30]
-`define _32_ARGS(a)                 `_31_ARGS(a), a[31]
-`define _ADD_ARGS(a, n)             `_``n``_ARGS(a)
+`define _1_ARGS(a) , a[0]
+`define _2_ARGS(a) `_1_ARGS(a), a[1]
+`define _3_ARGS(a) `_2_ARGS(a), a[2]
+`define _4_ARGS(a) `_3_ARGS(a), a[3]
+`define _5_ARGS(a) `_4_ARGS(a), a[4]
+`define _6_ARGS(a) `_5_ARGS(a), a[5]
+`define _7_ARGS(a) `_6_ARGS(a), a[6]
+`define _8_ARGS(a) `_7_ARGS(a), a[7]
+`define _9_ARGS(a) `_8_ARGS(a), a[8]
+`define _10_ARGS(a) `_9_ARGS(a), a[9]
+`define _11_ARGS(a) `_10_ARGS(a), a[10]
+`define _12_ARGS(a) `_11_ARGS(a), a[11]
+`define _13_ARGS(a) `_12_ARGS(a), a[12]
+`define _14_ARGS(a) `_13_ARGS(a), a[13]
+`define _15_ARGS(a) `_14_ARGS(a), a[14]
+`define _16_ARGS(a) `_15_ARGS(a), a[15]
+`define _17_ARGS(a) `_16_ARGS(a), a[16]
+`define _18_ARGS(a) `_17_ARGS(a), a[17]
+`define _19_ARGS(a) `_18_ARGS(a), a[18]
+`define _20_ARGS(a) `_19_ARGS(a), a[19]
+`define _21_ARGS(a) `_20_ARGS(a), a[20]
+`define _22_ARGS(a) `_21_ARGS(a), a[21]
+`define _23_ARGS(a) `_22_ARGS(a), a[22]
+`define _24_ARGS(a) `_23_ARGS(a), a[23]
+`define _25_ARGS(a) `_24_ARGS(a), a[24]
+`define _26_ARGS(a) `_25_ARGS(a), a[25]
+`define _27_ARGS(a) `_26_ARGS(a), a[26]
+`define _28_ARGS(a) `_27_ARGS(a), a[27]
+`define _29_ARGS(a) `_28_ARGS(a), a[28]
+`define _30_ARGS(a) `_29_ARGS(a), a[29]
+`define _31_ARGS(a) `_30_ARGS(a), a[30]
+`define _32_ARGS(a) `_31_ARGS(a), a[31]
+`define _ADD_ARGS(a, n) `_``n``_ARGS(a)
 `define FORMATTED_MSG_WITH_NARGS(n) $sformatf(msg `_ADD_ARGS(sw_msg.arg, n))
 
 interface sw_msg_monitor_if #(
-  // width of the data bus
-  parameter int unsigned DATA_WIDTH = 32
+    // width of the data bus
+    parameter int unsigned DATA_WIDTH = 32
 ) (
-  input logic                   clk,        // clock
-  input logic                   rst_n,      // active low reset
-  input logic                   valid,      // qualification for addr_data
-  input logic [DATA_WIDTH-1:0]  addr_data,  // addr/data written to sw_msg_addr
-  output logic [DATA_WIDTH-1:0] sw_msg_addr // used by external logic to qualify valid
+    input logic clk,  // clock
+    input logic rst_n,  // active low reset
+    input logic valid,  // qualification for addr_data
+    input logic [DATA_WIDTH-1:0] addr_data,  // addr/data written to sw_msg_addr
+    output logic [DATA_WIDTH-1:0] sw_msg_addr  // used by external logic to qualify valid
 );
 
   // types
@@ -62,15 +62,15 @@ interface sw_msg_monitor_if #(
 
   // struct to hold the complete msg data
   typedef struct {
-    string      msg_type;   // info, warning, error or fatal
-    string      verbosity;  // none, low, medium, high, full, debug
-    string      name;       // sw name
-    string      file;       // name of C file
-    int         line;       // line no
-    string      header;     // custom header (else its [name](file:line))
-    int         nargs;      // no of args
-    addr_data_t arg[];      // actual arg values
-    string      format;     // formatted string
+    string msg_type;  // info, warning, error or fatal
+    string verbosity;  // none, low, medium, high, full, debug
+    string name;  // sw name
+    string file;  // name of C file
+    int line;  // line no
+    string header;  // custom header (else its [name](file:line))
+    int nargs;  // no of args
+    addr_data_t arg[];  // actual arg values
+    string format;  // formatted string
   } sw_msg_t;
 
   // index of elements parsed from each line of msg data file
@@ -87,9 +87,9 @@ interface sw_msg_monitor_if #(
 
   // msg scheme
   typedef enum {
-    MsgSchemeNone,        // addr\msg (msg might contain additional metadata)
-    MsgSchmeCustomHeader, // addr\header\nargs\format
-    MsgSchemeDv           // addr\msg_type\verbosity\file\line\nargs\format
+    MsgSchemeNone,  // addr\msg (msg might contain additional metadata)
+    MsgSchmeCustomHeader,  // addr\header\nargs\format
+    MsgSchemeDv  // addr\msg_type\verbosity\file\line\nargs\format
   } msg_scheme_e;
 
   // signal indicating all initializations are done (this is set by calling ready() function)
@@ -164,10 +164,10 @@ interface sw_msg_monitor_if #(
         addr_data_t addr;
 
         while (!$feof(fd)) begin
-          string       line;
-          string       fields[$];
-          int          merge_fields_idx_start = 0;
-          int          merge_fields_idx_end = 0;
+          string line;
+          string fields[$];
+          int merge_fields_idx_start = 0;
+          int merge_fields_idx_end = 0;
           msg_scheme_e scheme;
 
           // read line and split into fields based on delimiter
@@ -183,8 +183,8 @@ interface sw_msg_monitor_if #(
           // get addr (first field)
           addr = fields[AddrIndex].atohex();
           if (sw_msgs.exists(addr)) begin
-            msg_warning(.msg($sformatf("msg entry for addr %0x already exists:\n%p",
-                                       addr, sw_msgs[addr])));
+            msg_warning(
+            .msg($sformatf("msg entry for addr %0x already exists:\n%p", addr, sw_msgs[addr])));
           end
 
           // detect msg scheme based on fields size and values
@@ -204,7 +204,7 @@ interface sw_msg_monitor_if #(
             // if fields size >= 4, its a msg with custom header
             // if fields size < 4, there no scheme detected
             if (fields.size() >= 4) scheme = MsgSchmeCustomHeader;
-            else                    scheme = MsgSchemeNone;
+            else scheme = MsgSchemeNone;
           end
 
           case (scheme)
@@ -214,7 +214,7 @@ interface sw_msg_monitor_if #(
               sw_msgs[addr].file = "";
               sw_msgs[addr].line = 0;
               sw_msgs[addr].nargs = 0;
-              sw_msgs[addr].format =  fields[1];
+              sw_msgs[addr].format = fields[1];
               sw_msgs[addr].name = sw_msg_data_files[i].name;
               merge_fields_idx_start = 2;
             end
@@ -225,7 +225,7 @@ interface sw_msg_monitor_if #(
               sw_msgs[addr].header = fields[1];
               sw_msgs[addr].nargs = fields[2].atoi();
               sw_msgs[addr].arg = new[sw_msgs[addr].nargs];
-              sw_msgs[addr].format =  fields[3];
+              sw_msgs[addr].format = fields[3];
               sw_msgs[addr].name = sw_msg_data_files[i].name;
               merge_fields_idx_start = 4;
             end
@@ -261,9 +261,8 @@ interface sw_msg_monitor_if #(
     return (sw_msgs.size() > 0);
   endfunction
 
-    // split string using single character delimiter (as byte)
-  function automatic void split_msg_data_line_to_fields(input string  str,
-                                                        output string split[$]);
+  // split string using single character delimiter (as byte)
+  function automatic void split_msg_data_line_to_fields(input string str, output string split[$]);
     int start = 0;
     for (int i = 0; i < str.len(); i++) begin
       if (str.getc(i) == delimiter) begin
@@ -305,7 +304,7 @@ interface sw_msg_monitor_if #(
     end
   endfunction
 
-    // retrieve addr or data from the bus
+  // retrieve addr or data from the bus
   task automatic get_addr_data_from_bus();
     forever begin
       @(posedge clk);
@@ -364,16 +363,16 @@ interface sw_msg_monitor_if #(
 
     // construct formatted string based on args
     case (sw_msg.nargs)
-       0: msg = `FORMATTED_MSG_WITH_NARGS(0);
-       1: msg = `FORMATTED_MSG_WITH_NARGS(1);
-       2: msg = `FORMATTED_MSG_WITH_NARGS(2);
-       3: msg = `FORMATTED_MSG_WITH_NARGS(3);
-       4: msg = `FORMATTED_MSG_WITH_NARGS(4);
-       5: msg = `FORMATTED_MSG_WITH_NARGS(5);
-       6: msg = `FORMATTED_MSG_WITH_NARGS(6);
-       7: msg = `FORMATTED_MSG_WITH_NARGS(7);
-       8: msg = `FORMATTED_MSG_WITH_NARGS(8);
-       9: msg = `FORMATTED_MSG_WITH_NARGS(9);
+      0: msg = `FORMATTED_MSG_WITH_NARGS(0);
+      1: msg = `FORMATTED_MSG_WITH_NARGS(1);
+      2: msg = `FORMATTED_MSG_WITH_NARGS(2);
+      3: msg = `FORMATTED_MSG_WITH_NARGS(3);
+      4: msg = `FORMATTED_MSG_WITH_NARGS(4);
+      5: msg = `FORMATTED_MSG_WITH_NARGS(5);
+      6: msg = `FORMATTED_MSG_WITH_NARGS(6);
+      7: msg = `FORMATTED_MSG_WITH_NARGS(7);
+      8: msg = `FORMATTED_MSG_WITH_NARGS(8);
+      9: msg = `FORMATTED_MSG_WITH_NARGS(9);
       10: msg = `FORMATTED_MSG_WITH_NARGS(10);
       11: msg = `FORMATTED_MSG_WITH_NARGS(11);
       12: msg = `FORMATTED_MSG_WITH_NARGS(12);
@@ -406,23 +405,22 @@ interface sw_msg_monitor_if #(
 
   // methods
   // msg_print api that switches between system call and UVM call
-  function automatic void msg_print(string msg_type = "i",
-                                    string verbosity = "n",
-                                    string msg_header = "",
-                                    string msg);
+  function automatic void msg_print(
+      string msg_type = "i", string verbosity = "n", string msg_header = "", string msg
+  );
 `ifdef UVM
     import uvm_pkg::*;
     `include "uvm_macros.svh"
 
     uvm_verbosity level;
     case (verbosity)
-      "n", "none":          level = UVM_NONE;
-      "l", "lo", "low":     level = UVM_LOW;
+      "n", "none": level = UVM_NONE;
+      "l", "lo", "low": level = UVM_LOW;
       "m", "med", "medium": level = UVM_MEDIUM;
-      "h", "hi", "high":    level = UVM_HIGH;
-      "f", "full":          level = UVM_FULL;
-      "d", "dbg", "debug":  level = UVM_DEBUG;
-      default:              level = UVM_NONE;
+      "h", "hi", "high": level = UVM_HIGH;
+      "f", "full": level = UVM_FULL;
+      "d", "dbg", "debug": level = UVM_DEBUG;
+      default: level = UVM_NONE;
     endcase
 
     // additional cleanup: if msg_header is already enclosed in [],
@@ -434,19 +432,19 @@ interface sw_msg_monitor_if #(
     end
 
     case (msg_type.tolower())
-      "i", "info":            `uvm_info(msg_header, msg, level)
+      "i", "info": `uvm_info(msg_header, msg, level)
       "w", "warn", "warning": `uvm_error(msg_header, msg)
-      "e", "err", "error":    `uvm_error(msg_header, msg)
-      "f", "fatal":           `uvm_fatal(msg_header, msg)
-      default:                `uvm_info(msg_header, msg, level)
+      "e", "err", "error": `uvm_error(msg_header, msg)
+      "f", "fatal": `uvm_fatal(msg_header, msg)
+      default: `uvm_info(msg_header, msg, level)
     endcase
 `else
     case (msg_type.tolower())
-      "i", "info":            $info("%0t: %0s %0s", $time, msg_header, msg);
+      "i", "info": $info("%0t: %0s %0s", $time, msg_header, msg);
       "w", "warn", "warning": $warning("%0t: %0s %0s", $time, msg_header, msg);
-      "e", "err", "error":    $error("%0t: %0s %0s", $time, msg_header, msg);
-      "f", "fatal":           $fatal("%0t: %0s %0s", $time, msg_header, msg);
-      default:                $info("%0t: %0s %0s", $time, msg_header, msg);
+      "e", "err", "error": $error("%0t: %0s %0s", $time, msg_header, msg);
+      "f", "fatal": $fatal("%0t: %0s %0s", $time, msg_header, msg);
+      default: $info("%0t: %0s %0s", $time, msg_header, msg);
     endcase
 `endif
   endfunction

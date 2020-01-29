@@ -12,10 +12,10 @@ class irq_master_driver extends uvm_driver #(irq_seq_item);
 
   function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    if (!uvm_config_db#(virtual irq_if)::get(this, "", "vif", vif)) begin
-      `uvm_fatal("NOVIF",{"virtual interface must be set for: ",get_full_name(),".vif"});
+    if (!uvm_config_db #(virtual irq_if)::get(this, "", "vif", vif)) begin
+      `uvm_fatal("NOVIF", {"virtual interface must be set for: ", get_full_name(), ".vif"});
     end
-  endfunction: build_phase
+  endfunction : build_phase
 
   virtual task run_phase(uvm_phase phase);
     reset_signals();
@@ -62,20 +62,20 @@ class irq_master_driver extends uvm_driver #(irq_seq_item);
     drive_reset_value();
   endtask : reset_signals
 
-  virtual protected task drive_seq_item (irq_seq_item trans);
+  virtual protected task drive_seq_item(irq_seq_item trans);
     vif.irq_software <= trans.irq_software;
-    vif.irq_timer    <= trans.irq_timer;
+    vif.irq_timer <= trans.irq_timer;
     vif.irq_external <= trans.irq_external;
-    vif.irq_fast     <= trans.irq_fast;
-    vif.irq_nm       <= trans.irq_nm;
+    vif.irq_fast <= trans.irq_fast;
+    vif.irq_nm <= trans.irq_nm;
   endtask : drive_seq_item
 
   task drive_reset_value();
     vif.irq_software <= '0;
-    vif.irq_timer    <= '0;
+    vif.irq_timer <= '0;
     vif.irq_external <= '0;
-    vif.irq_fast     <= '0;
-    vif.irq_nm       <= '0;
+    vif.irq_fast <= '0;
+    vif.irq_nm <= '0;
   endtask : drive_reset_value
 
 endclass : irq_master_driver

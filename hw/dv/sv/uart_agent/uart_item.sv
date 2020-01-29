@@ -33,12 +33,12 @@ class uart_item extends uvm_sequence_item;
   }
 
   `uvm_object_utils_begin(uart_item)
-    `uvm_field_int(start_bit,       UVM_DEFAULT | UVM_NOCOMPARE | UVM_NOPRINT)
-    `uvm_field_int(data,            UVM_DEFAULT)
-    // parity & stop_bit are checked in monitor
-    `uvm_field_int(parity,          UVM_DEFAULT | UVM_NOCOMPARE)
-    `uvm_field_int(stop_bit,        UVM_DEFAULT | UVM_NOCOMPARE | UVM_NOPRINT)
-    `uvm_field_int(ovrd_en_parity,  UVM_DEFAULT | UVM_NOCOMPARE | UVM_NOPRINT)
+    `uvm_field_int(start_bit, UVM_DEFAULT | UVM_NOCOMPARE | UVM_NOPRINT)
+    `uvm_field_int(data, UVM_DEFAULT)
+  // parity & stop_bit are checked in monitor
+    `uvm_field_int(parity, UVM_DEFAULT | UVM_NOCOMPARE)
+    `uvm_field_int(stop_bit, UVM_DEFAULT | UVM_NOCOMPARE | UVM_NOPRINT)
+    `uvm_field_int(ovrd_en_parity, UVM_DEFAULT | UVM_NOCOMPARE | UVM_NOPRINT)
   `uvm_object_utils_end
 
   `uvm_object_new

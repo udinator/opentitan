@@ -19,14 +19,14 @@ class spi_device_fifo_full_vseq extends spi_device_txrx_vseq;
 
   constraint rx_delay_c {
     rx_delay dist {
-      0              :/ 1,
-      [1   : 100]    :/ 1,
+      0 :/ 1,
+      [1 : 100] :/ 1,
       [101 : 10_000] :/ 8
     };
   }
 
   constraint num_trans_c {
-    num_trans inside {[2:3]};
+    num_trans inside {[2 : 3]};
   }
 
 endclass : spi_device_fifo_full_vseq

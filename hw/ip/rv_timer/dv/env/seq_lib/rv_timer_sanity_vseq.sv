@@ -7,16 +7,16 @@ class rv_timer_sanity_vseq extends rv_timer_base_vseq;
   `uvm_object_new
 
   rand bit [NUM_TIMERS-1:0] en_timers;
-  rand bit [NUM_HARTS-1:0]  en_harts;
+  rand bit [NUM_HARTS-1:0] en_harts;
 
   rand uint64 timer_val[NUM_HARTS];
   rand uint64 compare_val[NUM_HARTS][NUM_TIMERS];
-  rand bit    en_interrupt[NUM_HARTS][NUM_TIMERS];
+  rand bit en_interrupt[NUM_HARTS][NUM_TIMERS];
 
   rand uint prescale[NUM_HARTS];
   rand uint step[NUM_HARTS];
   rand uint ticks[NUM_HARTS];
-  rand bit  assert_reset;
+  rand bit assert_reset;
 
   uint64 max_clks_until_expiry = 5_000_000;
 
@@ -25,7 +25,7 @@ class rv_timer_sanity_vseq extends rv_timer_base_vseq;
   }
 
   constraint num_trans_c {
-    num_trans inside {[1:6]};
+    num_trans inside {[1 : 6]};
   }
 
   // at least 1 timer enabled
@@ -41,26 +41,30 @@ class rv_timer_sanity_vseq extends rv_timer_base_vseq;
   // prescaler less than max prescale for enabled hart
   constraint prescale_c {
     solve en_harts before prescale;
-    foreach (prescale[i]) {
-      if (en_harts[i])  prescale[i] inside {[0:max_prescale]};
-      else              prescale[i] == 0;
+    foreach (prescale[i]){
+      if (en_harts[i])
+      prescale[i] inside {[0 : max_prescale]};
+          else
+      prescale[i] == 0;
     }
   }
 
   // step less than max step for enabled hart
   constraint step_c {
     solve en_harts before step;
-    foreach (step[i]) {
-      if (en_harts[i])  step[i] inside {[1:max_step]};
-      else              step[i] == 0;
+    foreach (step[i]){
+      if (en_harts[i])
+      step[i] inside {[1 : max_step]};
+          else
+      step[i] == 0;
     }
   }
 
   // ticks * prescale < max clks
   constraint ticks_c {
     solve prescale before ticks;
-    foreach (ticks[i]) {
-      if (en_harts[i]) {
+    foreach (ticks[i]){
+      if (en_harts[i]){
         (ticks[i] * (prescale[i] + 1)) <= max_clks_until_expiry;
       }
     }
@@ -73,9 +77,9 @@ class rv_timer_sanity_vseq extends rv_timer_base_vseq;
     solve timer_val before compare_val;
     solve step before compare_val;
     solve ticks before compare_val;
-    foreach (en_harts[i]) {
-      foreach (en_timers[j]) {
-        if (en_harts[i] && en_timers[j]) {
+    foreach (en_harts[i]){
+      foreach (en_timers[j]){
+        if (en_harts[i] && en_timers[j]){
           compare_val[i][j] == timer_val[i] + step[i] * ticks[i];
         }
       }
@@ -124,9 +128,12 @@ class rv_timer_sanity_vseq extends rv_timer_base_vseq;
               // poll a intr_status continuously until it reads the expected value
               if (en_harts[a_i]) begin
                 `DV_CHECK_MEMBER_RANDOMIZE_FATAL(delay)
-                intr_state_spinwait(.hart(a_i), .exp_data(en_timers), .spinwait_delay_ns(delay),
-                                    .timeout_ns(delay + (max_clks_until_expiry *
-                                        (cfg.clk_rst_vif.clk_period_ps / 1000.0))));
+                intr_state_spinwait(
+                .hart(a_i),
+                .exp_data(en_timers),
+                .spinwait_delay_ns(delay),
+                .timeout_ns(delay + (max_clks_until_expiry * (cfg.clk_rst_vif.clk_period_ps / 1000.0
+                                     ))));
               end
             join_none
           end
@@ -152,8 +159,8 @@ class rv_timer_sanity_vseq extends rv_timer_base_vseq;
   // Function to calculate number of clks to interrup for given hart and timer
   function automatic uint calculate_num_clks(int hart = 0, int timer = 0);
     uint64 mtime_dif = compare_val[hart][timer] - timer_val[hart];
-    calculate_num_clks = ((mtime_dif / step[hart]) +
-                          ((mtime_dif % step[hart]) != 0)) * (prescale[hart] +1) + 1;
+    calculate_num_clks = ((mtime_dif / step[hart]) + ((mtime_dif % step[hart]) != 0)) * (
+        prescale[hart] + 1) + 1;
   endfunction : calculate_num_clks
 
   // configure all timers and harts based on rand fields
